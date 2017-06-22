@@ -1,6 +1,6 @@
-package resourceController;
+package resource;
 
-import representation.User;
+import model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserResource {
 
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity getUsers(@RequestParam(value="wnumber", defaultValue="") String wNumber) {

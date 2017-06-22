@@ -1,4 +1,4 @@
-package representation;
+package model;
 
 /**
  * Created by samuel on 5/30/17.
