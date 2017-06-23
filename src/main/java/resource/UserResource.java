@@ -13,7 +13,7 @@ import java.util.List;
  * Created by samuel on 5/30/17.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping(ResourceConstants.BASE_DOMAIN + ResourceConstants.USER_RESOURCE)
 public class UserResource {
 
     @RequestMapping(method=RequestMethod.GET)
@@ -35,7 +35,7 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.OK).body(UserRepository.getByWNumber(user.getwNumber()));
     }
 
-    @RequestMapping(path = "/{wNumber}", method=RequestMethod.GET)
+    @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.GET)
     public ResponseEntity getUser(@PathVariable("wNumber") String wNumber) {
         User user = UserRepository.getByWNumber(wNumber);
         if (user == null) {
