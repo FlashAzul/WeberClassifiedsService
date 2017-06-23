@@ -29,6 +29,10 @@ public class UserRepository {
         userMap.put(user.getwNumber(), user);
     }
 
+    public static void deleteUser(User user){
+        userMap.remove(user.getwNumber());
+    }
+
     public static User getByWNumber(String wNumber) {
         return userMap.get(wNumber);
     }

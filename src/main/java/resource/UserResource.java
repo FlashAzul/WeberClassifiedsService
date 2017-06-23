@@ -44,5 +44,15 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+    @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.DELETE)
+    public ResponseEntity deleteUser(@PathVariable("wNumber") String wNumber){
+        User user = UserRepository.getByWNumber(wNumber);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with W Number: " + wNumber + " not found");
+        }
+        UserRepository.deleteUser(user);
+        return ResponseEntity.status(HttpStatus.OK).body("User " + wNumber + " successfully deleted");
+    }
+
 
 }
