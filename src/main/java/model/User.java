@@ -13,10 +13,13 @@ public class User {
     private Address address;
     private String password;
 
-    public User(String wNumber, String firstName, String lastName) {
+    public User(String wNumber, String email, String firstName, String lastName, Address address, String password) {
         this.wNumber = wNumber;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.address = address;
+        this.password = password;
     }
 
     public User() {}

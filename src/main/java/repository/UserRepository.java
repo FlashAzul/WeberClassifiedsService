@@ -1,5 +1,6 @@
 package repository;
 
+import model.Address;
 import model.User;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class UserRepository {
     private static Map<String, User> userMap = new ConcurrentHashMap<>();
 
     static {
-        User userSam = new User("w12345", "Samuel", "Doria");
+        Address adr1 = new Address("20 s state", "Slc", "Ut", "84101");
+        User userSam = new User("w12345", "test@mail.com", "Samuel", "Doria", adr1, "12345");
         userMap.put(userSam.getwNumber(), userSam);
-        User userDarthVadar = new User("w66", "Darth", "Vadar");
+        Address adr2 = new Address("200 west Circle dr.", "Slc", "Ut", "84101");
+        User userDarthVadar = new User("w66", "test2@mail.com", "Darth", "Vadar", adr2, "123456");
         userMap.put(userDarthVadar.getwNumber(), userDarthVadar);
     }
 
