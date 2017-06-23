@@ -4,6 +4,7 @@ package model;
  * Created by samuel on 6/22/17.
  */
 public class Address {
+
     private String address1;
     private String address2;
     private String city;
