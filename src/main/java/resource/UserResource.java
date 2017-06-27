@@ -3,7 +3,6 @@ package resource;
 import model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import repository.UserRepository;
 
@@ -17,11 +16,13 @@ import java.util.List;
 public class UserResource {
 
     @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity getUsers(@RequestParam(value="wnumber", defaultValue="") String wNumber) {
-        if (StringUtils.isEmpty(wNumber)) {
-            List<User> users = UserRepository.getAll();
-            return ResponseEntity.status(HttpStatus.OK).body(users);
-        }
+    public ResponseEntity getUsers() {
+        List<User> users = UserRepository.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+    @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.GET)
+    public ResponseEntity getUser(@PathVariable("wnumber") String wNumber) {
         User user = UserRepository.getByWNumber(wNumber);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with W Number: " + wNumber + " not found");
@@ -35,17 +36,8 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.OK).body(UserRepository.getByWNumber(user.getwNumber()));
     }
 
-    @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.GET)
-    public ResponseEntity getUser(@PathVariable("wNumber") String wNumber) {
-        User user = UserRepository.getByWNumber(wNumber);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with W Number: " + wNumber + " not found");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(user);
-    }
-
     @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.DELETE)
-    public ResponseEntity deleteUser(@PathVariable("wNumber") String wNumber){
+    public ResponseEntity deleteUser(@PathVariable("wnumber") String wNumber){
         User user = UserRepository.getByWNumber(wNumber);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with W Number: " + wNumber + " not found");

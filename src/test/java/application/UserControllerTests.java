@@ -28,7 +28,7 @@ public class UserControllerTests {
     @Test
     public void samUserShouldExist() throws Exception {
 
-        this.mockMvc.perform(get("/user?wnumber=w12345")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/weberclassifieds/user?wnumber=w12345")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.wNumber").value("w12345"));
     }
 }
