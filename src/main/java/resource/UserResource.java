@@ -50,5 +50,4 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.OK).body("User " + wNumber + " successfully deleted");
     }
 
-
 }
