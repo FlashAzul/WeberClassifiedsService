@@ -26,7 +26,7 @@ public class UserResource {
     }
 
     @RequestMapping(path = ResourceConstants.PATH_VARIABLE_WNUMBER, method=RequestMethod.GET)
-    public ResponseEntity getUser(@PathVariable(WNUMBER) String wNumber) {
+    public ResponseEntity getUserByWNumber(@PathVariable(WNUMBER) String wNumber) {
         User user = userRepository.getByWNumber(wNumber);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with W Number: " + wNumber + " not found");
@@ -35,7 +35,7 @@ public class UserResource {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity createNewUser(@RequestBody User user) {
+    public ResponseEntity createUser(@RequestBody User user) {
         userRepository.addUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.getByWNumber(user.getwNumber()));
     }
