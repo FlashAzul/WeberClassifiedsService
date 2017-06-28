@@ -20,7 +20,6 @@ public class Address {
         this.zip = zip;
     }
 
-
     public String getAddress1() {
         return address1;
     }
