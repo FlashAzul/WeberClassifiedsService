@@ -82,9 +82,6 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        if (((User) obj).getwNumber().equals(this.getwNumber())) {
-            return true;
-        }
-        return false;
+        return ((User) obj).getwNumber().equals(this.getwNumber());
     }
 }

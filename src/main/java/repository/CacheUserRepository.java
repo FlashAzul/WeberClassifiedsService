@@ -30,7 +30,7 @@ public class CacheUserRepository implements UserRepository {
         userMap.put(user.getwNumber(), user);
     }
 
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         userMap.remove(user.getwNumber());
     }
 
