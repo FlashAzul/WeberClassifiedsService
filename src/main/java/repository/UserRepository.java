@@ -6,14 +6,19 @@ import java.util.List;
 
 /**
  * Created by samuel on 5/30/17.
+ * Interface representing a data-store for users.
  */
 public interface UserRepository {
 
-    void addUser(User user);
+    void create (User user);
 
-    void deleteUser(User user);
+    void delete (User user);
 
-    User getByWNumber(String wNumber);
+    void update (User user);
 
-    List<User> getAll();
+    User getById (Long id);
+
+    User getByUserName (String userName);
+
+    List<User> getAll ();
 }

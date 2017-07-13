@@ -2,19 +2,20 @@ package resource;
 
 /**
  * Created by samuel on 6/22/17.
+ * Container For Constants used in Resource classes.
  */
-public class ResourceConstants {
+class ResourceConstants {
+    private static final String OPEN_BRACE = "{";
+    private static final String CLOSE_BRACE = "}";
+    private static final String SLASH = "/";
 
-    static final String SLASH = "/";
-    static final String OPEN_BRACE = "{";
-    static final String CLOSE_BRACE = "}";
-
-    static final String BASE_DOMAIN = "weberclassifieds";
-    static final String USER_RESOURCE = "user";
-    static final String WNUMBER = "wNumber";
-    static final String RESOURCE_AUTHENTICATION = "authentication";
-    static final String PATH_VARIABLE_WNUMBER = OPEN_BRACE + WNUMBER + CLOSE_BRACE;
-
-    public static final String TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBdXRoU2VydmljZSIsInVzZXJOYW1lIjoiYWRtaW4iLCJpYXQiOjE0OTkzMTU5MjMsImV4cCI6MTQ5OTMxNzcyM30.NagceLOmy9frQpDc3Re78sbcVDZ_5vzNgn3k4fsG-qY";
+    static final String ID = "id";
+    static final String AUTH_TOKEN_HEADER = "AuthToken";
+    static final String AUTHORIZATION_REQUEST_HEADER = "Authorization";
+    static final String WEBER_CLASSIFIEDS = SLASH + "weberclassifieds";
+    static final String USERS_RESOURCE = SLASH + "users";
+    static final String ID_PATH_VARIABLE = OPEN_BRACE + ID + CLOSE_BRACE;
+    static final String USER_RESOURCE = USERS_RESOURCE + SLASH + ID_PATH_VARIABLE;
+    static final String AUTHENTICATION_RESOURCE = SLASH + "authentication";
 
 }

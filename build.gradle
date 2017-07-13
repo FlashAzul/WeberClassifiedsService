@@ -13,7 +13,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'weber-classifieds-service'
-    version =  '0.0.2'
+    version =  '0.0.3'
 }
 
 repositories {
@@ -24,6 +24,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')

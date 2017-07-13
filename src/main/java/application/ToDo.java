@@ -2,14 +2,22 @@ package application;
 
 /**
  * Created by samuel on 7/6/17.
+ * Things that can be done on this project.
  */
 public class ToDo {
 
-    // Todo: Add UserPost resource
-    // Todo: Add User Attachment Resource
-    // Todo: Add plural resource handlers, ie /users and ie /users/{12345}
-    // Todo: Add authentication service
-    // Todo: Add presentation version of model
-    // Todo: Remove instances of null in the presentation layer
+    // Features:
+    // Todo: Add Auth Refresh Resource.
+    // Todo: Encrypt token using public private key.
+    // Todo: Add hateos links.
+    // Todo: Add UserPost resource.
+    // Todo: Add User Attachment Resource.
+    // Todo: Add database repository.
+
+    // Refactoring
+    // Todo: Remove instances of null in the presentation layer.
+    // Todo: Add AuthorizationRequired annotation so duplicated authorization code can be removed.
+    // Todo: Change user salt when they change their password.
+    // Todo: Standardize Error Messages
 
 }
