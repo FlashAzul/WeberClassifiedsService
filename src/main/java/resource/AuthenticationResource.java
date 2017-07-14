@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import static resource.ResourceConstants.AUTHORIZATION_REQUEST_HEADER;
  * Created by samuel on 7/6/17.
  * Class Representing the /authentication endpoint of the service.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(ResourceConstants.WEBER_CLASSIFIEDS + AUTHENTICATION_RESOURCE)
 public class AuthenticationResource {
