@@ -1,7 +1,7 @@
 package model;
 
+import application.ApplicationConstants;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import repository.CacheUserRepository;
 
 /**
  * Created by samuel on 5/30/17.
@@ -18,10 +18,10 @@ public class User {
     private Address address;
     private String hashedPassword;
     private String salt;
-    private CacheUserRepository.AccessLevel accessLevel;
+    private ApplicationConstants.AccessLevel accessLevel;
 
     public User (String userName, String wNumber, String email, String firstName, String lastName, Address address,
-                 String hashedPassword, String salt, CacheUserRepository.AccessLevel accessLevel) {
+                 String hashedPassword, String salt, ApplicationConstants.AccessLevel accessLevel) {
         this.userName = userName;
         this.wNumber = wNumber;
         this.email = email;
@@ -60,11 +60,11 @@ public class User {
         this.salt = salt;
     }
 
-    public CacheUserRepository.AccessLevel getAccessLevel () {
+    public ApplicationConstants.AccessLevel getAccessLevel () {
         return accessLevel;
     }
 
-    public void setAccessLevel (CacheUserRepository.AccessLevel accessLevel) {
+    public void setAccessLevel (ApplicationConstants.AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
 

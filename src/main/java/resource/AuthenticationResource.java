@@ -14,8 +14,8 @@ import repository.UserRepository;
 import utility.AuthenticationUtils;
 import utility.UserUtils;
 
-import static resource.ResourceConstants.AUTHENTICATION_RESOURCE;
-import static resource.ResourceConstants.AUTHORIZATION_REQUEST_HEADER;
+import static application.ApplicationConstants.AUTHENTICATION_RESOURCE;
+import static application.ApplicationConstants.AUTHORIZATION_REQUEST_HEADER;
 
 /**
  * Created by samuel on 7/6/17.
@@ -41,8 +41,8 @@ public class AuthenticationResource {
         User user = userRepository.getByUserName(userName);
         if (user != null) {
             if (user.getHashedPassword().equals(AuthenticationUtils.hashPassword(password, user.getSalt()))) {
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtils.buildJwtToken(UserUtils
-                        .buildUserPresentation(user)));
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtils
+                        .buildAuthenticationRepresentation(UserUtils.buildUserPresentation(user)));
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Your username and password were rejected...");

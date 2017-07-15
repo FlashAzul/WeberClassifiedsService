@@ -1,9 +1,9 @@
 package representation;
 
+import application.ApplicationConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import model.Address;
-import repository.CacheUserRepository;
 
 /**
  * Created by samuel on 7/6/17.
@@ -20,13 +20,13 @@ public class UserRepresentation {
     private String lastName;
     private String password;
     private Address address;
-    private CacheUserRepository.AccessLevel accessLevel;
+    private ApplicationConstants.AccessLevel accessLevel;
 
-    public CacheUserRepository.AccessLevel getAccessLevel () {
+    public ApplicationConstants.AccessLevel getAccessLevel () {
         return accessLevel;
     }
 
-    public void setAccessLevel (CacheUserRepository.AccessLevel accessLevel) {
+    public void setAccessLevel (ApplicationConstants.AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
 

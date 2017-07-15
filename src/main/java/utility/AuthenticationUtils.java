@@ -3,6 +3,7 @@ package utility;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.StringUtils;
+import representation.AuthenticationRepresentation;
 import representation.UserRepresentation;
 
 import javax.crypto.SecretKey;
@@ -14,12 +15,15 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Calendar;
 
-import static utility.AuthConstants.ACCESS_LEVEL_CLAIM;
-import static utility.AuthConstants.HASH_ALGORITHM;
-import static utility.AuthConstants.TOKEN_EXPIRATION_MINUTES;
-import static utility.AuthConstants.TOKEN_ISSUER;
-import static utility.AuthConstants.TOKEN_SIGNATURE_KEY;
-import static utility.AuthConstants.USER_NAME_CLAIM;
+import static application.ApplicationConstants.ACCESS_LEVEL_CLAIM;
+import static application.ApplicationConstants.HASH_ALGORITHM;
+import static application.ApplicationConstants.TOKEN_EXPIRATION_MINUTES;
+import static application.ApplicationConstants.TOKEN_ISSUER;
+import static application.ApplicationConstants.TOKEN_SIGNATURE_KEY;
+import static application.ApplicationConstants.TOKEN_TYPE;
+import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
+import static application.ApplicationConstants.TOKEN_TYPE_REFRESH;
+import static application.ApplicationConstants.USER_NAME_CLAIM;
 
 /**
  * Created by samuel on 7/11/17.
@@ -61,12 +65,18 @@ public class AuthenticationUtils {
         return authInfo[1];
     }
 
-    public static String buildJwtToken (UserRepresentation user) {
+    public static AuthenticationRepresentation buildAuthenticationRepresentation (UserRepresentation user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, TOKEN_EXPIRATION_MINUTES);
-        return Jwts.builder().setIssuer(TOKEN_ISSUER).claim(USER_NAME_CLAIM, user.getUserName()).claim
-                (ACCESS_LEVEL_CLAIM, user.getAccessLevel()).setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(calendar.getTime()).signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        String authToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_AUTH)
+                .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
+                .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())
+                .signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        String refreshToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_REFRESH)
+                .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
+                .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())
+                .signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        return new AuthenticationRepresentation(authToken, refreshToken);
     }
 
     public static String hashPassword (String passwordString, String saltString) {

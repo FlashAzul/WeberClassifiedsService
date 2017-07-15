@@ -1,5 +1,6 @@
 package resource;
 
+import application.ApplicationConstants;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import repository.CacheUserRepository;
 import repository.UserRepository;
 import representation.UserRepresentation;
 import utility.AuthorizationUtils;
 import utility.UserUtils;
 
-import static resource.ResourceConstants.AUTH_TOKEN_HEADER;
-import static resource.ResourceConstants.ID;
-import static resource.ResourceConstants.USER_RESOURCE;
+import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
+import static application.ApplicationConstants.ID;
+import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
+import static application.ApplicationConstants.USER_RESOURCE;
 
 /**
  * Created by samuel on 5/30/17.
@@ -34,10 +35,9 @@ public class UserResource {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getUserById (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String
-            authToken) {
+    public ResponseEntity getUserById (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(authToken, CacheUserRepository.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
                 userRepository)) {
             User user = userRepository.getById(userId);
             if (user == null) {
@@ -51,22 +51,22 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity updateUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
-            authToken) {
-        if (AuthorizationUtils.validateUserAuthorization(authToken, CacheUserRepository.AccessLevel.ADMIN,
+    public ResponseEntity updateUser (@RequestBody UserRepresentation user,
+                                      @RequestHeader(AUTH_TOKEN_HEADER) String token) {
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
                 userRepository)) {
             if (!userRepository.getByUserName(user.getUserName()).getId().equals(user.getId())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
-                        + "' already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("A user with username '" + user.getUserName() + "' already exists.");
             }
             User updatedUserModel = UserUtils.buildUserModel(userRepository, user);
             if (updatedUserModel == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + user.getId() + " not " +
-                        "found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("User with Id: " + user.getId() + " not " + "found");
             }
             userRepository.update(updatedUserModel);
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.getById
-                    (updatedUserModel.getId())));
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(UserUtils.buildUserPresentation(userRepository.getById(updatedUserModel.getId())));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
@@ -74,10 +74,9 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String
-            authToken) {
+    public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(authToken, CacheUserRepository.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
                 userRepository)) {
             User user = userRepository.getById(userId);
             if (user == null) {

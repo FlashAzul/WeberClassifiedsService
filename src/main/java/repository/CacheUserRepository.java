@@ -1,5 +1,6 @@
 package repository;
 
+import application.ApplicationConstants;
 import model.Address;
 import model.User;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class CacheUserRepository implements UserRepository {
         Address adr1 = new Address("20 s state", "Slc", "Ut", "84101");
         String password = AuthenticationUtils.hashPassword("password", "23423423525");
         User adminDefault = new User("admin", "w12345", "test@mail.com", "Darth", "Vadar", adr1, password,
-                "23423423525", AccessLevel.ADMIN);
+                "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault.setId(1L);
         userCache.put(adminDefault.getId(), adminDefault);
     }
@@ -63,7 +64,4 @@ public class CacheUserRepository implements UserRepository {
         return new ArrayList<>(userCache.values());
     }
 
-    public enum AccessLevel {
-        ADMIN, STANDARD
-    }
 }
