@@ -23,7 +23,7 @@ import static resource.ResourceConstants.AUTHORIZATION_REQUEST_HEADER;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(ResourceConstants.WEBER_CLASSIFIEDS + AUTHENTICATION_RESOURCE)
+@RequestMapping(AUTHENTICATION_RESOURCE)
 public class AuthenticationResource {
 
     @Autowired

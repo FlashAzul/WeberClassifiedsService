@@ -3,7 +3,7 @@ package utility;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.StringUtils;
-import presentation.UserPresentation;
+import representation.UserRepresentation;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -61,7 +61,7 @@ public class AuthenticationUtils {
         return authInfo[1];
     }
 
-    public static String buildJwtToken (UserPresentation user) {
+    public static String buildJwtToken (UserRepresentation user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, TOKEN_EXPIRATION_MINUTES);
         return Jwts.builder().setIssuer(TOKEN_ISSUER).claim(USER_NAME_CLAIM, user.getUserName()).claim

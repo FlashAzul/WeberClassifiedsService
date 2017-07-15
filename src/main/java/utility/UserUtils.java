@@ -2,8 +2,8 @@ package utility;
 
 import model.User;
 import org.springframework.util.StringUtils;
-import presentation.UserPresentation;
 import repository.UserRepository;
+import representation.UserRepresentation;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -15,48 +15,48 @@ import java.util.List;
  */
 public class UserUtils {
 
-    public static List<UserPresentation> buildUserPresentation (List<User> userModels) {
-        List<UserPresentation> userPresentations = new ArrayList<>();
+    public static List<UserRepresentation> buildUserPresentation (List<User> userModels) {
+        List<UserRepresentation> userRepresentations = new ArrayList<>();
         for (User userModel : userModels) {
-            UserPresentation userPresentation = buildUserPresentation(userModel);
-            userPresentations.add(userPresentation);
+            UserRepresentation userRepresentation = buildUserPresentation(userModel);
+            userRepresentations.add(userRepresentation);
         }
-        return userPresentations;
+        return userRepresentations;
     }
 
-    public static UserPresentation buildUserPresentation (User userModel) {
-        UserPresentation userPresentation = new UserPresentation();
-        userPresentation.setId(userModel.getId());
-        userPresentation.setUserName(userModel.getUserName());
-        userPresentation.setAddress(userModel.getAddress());
-        userPresentation.setEmail(userModel.getEmail());
-        userPresentation.setFirstName(userModel.getFirstName());
-        userPresentation.setLastName(userModel.getLastName());
-        userPresentation.setwNumber(userModel.getwNumber());
-        userPresentation.setAccessLevel(userModel.getAccessLevel());
-        return userPresentation;
+    public static UserRepresentation buildUserPresentation (User userModel) {
+        UserRepresentation userRepresentation = new UserRepresentation();
+        userRepresentation.setId(userModel.getId());
+        userRepresentation.setUserName(userModel.getUserName());
+        userRepresentation.setAddress(userModel.getAddress());
+        userRepresentation.setEmail(userModel.getEmail());
+        userRepresentation.setFirstName(userModel.getFirstName());
+        userRepresentation.setLastName(userModel.getLastName());
+        userRepresentation.setwNumber(userModel.getwNumber());
+        userRepresentation.setAccessLevel(userModel.getAccessLevel());
+        return userRepresentation;
     }
 
-    public static User buildUserModel (UserRepository userRepository, UserPresentation userPresentation) {
-        User userModel = userRepository.getById(userPresentation.getId());
+    public static User buildUserModel (UserRepository userRepository, UserRepresentation userRepresentation) {
+        User userModel = userRepository.getById(userRepresentation.getId());
         if (userModel == null) {
             userModel = new User();
         }
-        if (StringUtils.isEmpty(userModel.getSalt()) && !StringUtils.isEmpty(userPresentation.getPassword())) {
+        if (StringUtils.isEmpty(userModel.getSalt()) && !StringUtils.isEmpty(userRepresentation.getPassword())) {
             SecureRandom random = new SecureRandom();
             byte bytes[] = new byte[20];
             random.nextBytes(bytes);
             String salt = new String(bytes);
             userModel.setSalt(salt);
-            userModel.setHashedPassword(AuthenticationUtils.hashPassword(userPresentation.getPassword(), salt));
+            userModel.setHashedPassword(AuthenticationUtils.hashPassword(userRepresentation.getPassword(), salt));
         }
-        userModel.setAccessLevel(userPresentation.getAccessLevel());
-        userModel.setAddress(userPresentation.getAddress());
-        userModel.setEmail(userPresentation.getEmail());
-        userModel.setFirstName(userPresentation.getFirstName());
-        userModel.setLastName(userPresentation.getLastName());
-        userModel.setUserName(userPresentation.getUserName());
-        userModel.setwNumber(userPresentation.getwNumber());
+        userModel.setAccessLevel(userRepresentation.getAccessLevel());
+        userModel.setAddress(userRepresentation.getAddress());
+        userModel.setEmail(userRepresentation.getEmail());
+        userModel.setFirstName(userRepresentation.getFirstName());
+        userModel.setLastName(userRepresentation.getLastName());
+        userModel.setUserName(userRepresentation.getUserName());
+        userModel.setwNumber(userRepresentation.getwNumber());
         return userModel;
     }
 }

@@ -1,4 +1,4 @@
-package presentation;
+package representation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,7 +10,7 @@ import repository.CacheUserRepository;
  * Class representing what the service will return for a given user.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserPresentation {
+public class UserRepresentation {
 
     private Long id;
     private String userName;

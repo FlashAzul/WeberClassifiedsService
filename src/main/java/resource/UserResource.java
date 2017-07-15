@@ -11,24 +11,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import presentation.UserPresentation;
 import repository.CacheUserRepository;
 import repository.UserRepository;
+import representation.UserRepresentation;
 import utility.AuthorizationUtils;
 import utility.UserUtils;
 
 import static resource.ResourceConstants.AUTH_TOKEN_HEADER;
 import static resource.ResourceConstants.ID;
 import static resource.ResourceConstants.USER_RESOURCE;
-import static resource.ResourceConstants.WEBER_CLASSIFIEDS;
 
 /**
  * Created by samuel on 5/30/17.
  * Class Representing the /user endpoint of the service.
  */
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(WEBER_CLASSIFIEDS + USER_RESOURCE)
+@RequestMapping(USER_RESOURCE)
 public class UserResource {
 
     @Autowired
@@ -52,7 +51,7 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity updateUser (@RequestBody UserPresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
+    public ResponseEntity updateUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
             authToken) {
         if (AuthorizationUtils.validateUserAuthorization(authToken, CacheUserRepository.AccessLevel.ADMIN,
                 userRepository)) {
