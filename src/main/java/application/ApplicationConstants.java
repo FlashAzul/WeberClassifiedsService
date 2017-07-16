@@ -28,6 +28,7 @@ public class ApplicationConstants {
     public static final String REFRESH_RESOURCE = SERVICE_NAME + SLASH + "refresh";
     public static final String USERS_RESOURCE = SERVICE_NAME + SLASH + "users";
     public static final String USER_RESOURCE = USERS_RESOURCE + SLASH + ID_PATH_VARIABLE;
+    public static final String LISTING_RESOURCE = SERVICE_NAME + SLASH + "listing";
 
     // Authentication
     public static final String TOKEN_SIGNATURE_KEY = "X317OlbkDHJd9fQadZgRXC7dZtsRIqCKB&y#0sRjqK6uuS1QXF";
