@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 import static application.ApplicationConstants.ACCESS_LEVEL_CLAIM;
 import static application.ApplicationConstants.HASH_ALGORITHM;
+import static application.ApplicationConstants.REFRESH_TOKEN_EXPIRATION_MINUTES;
 import static application.ApplicationConstants.TOKEN_EXPIRATION_MINUTES;
 import static application.ApplicationConstants.TOKEN_ISSUER;
 import static application.ApplicationConstants.TOKEN_SIGNATURE_KEY;
@@ -72,6 +73,7 @@ public class AuthenticationUtils {
                 .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
                 .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())
                 .signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        calendar.add(Calendar.MINUTE, REFRESH_TOKEN_EXPIRATION_MINUTES);
         String refreshToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_REFRESH)
                 .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
                 .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())

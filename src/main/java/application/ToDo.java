@@ -7,15 +7,15 @@ package application;
 public class ToDo {
 
     // Features:
-    // Todo: Add Auth Refresh Resource.
-    // Todo: Encrypt token using public private key.
-    // Todo: Add hateos links.
-    // Todo: Add UserPost resource.
-    // Todo: Add User Attachment Resource.
+    // Todo: Add Listing resource.
+    // Todo: Add Listing Attachment Resource.
+    // Todo: Add filter by name to Users Resource.
+    // Todo: Add filter by keyword to Users Resource.
+    // Todo: Add validation error handling around each resource.
     // Todo: Add database repository.
 
     // Refactoring
-    // Todo: Remove instances of null in the presentation layer.
+    // Todo: Remove instances of null in the representation layer.
     // Todo: Add AuthorizationRequired annotation so duplicated authorization code can be removed.
     // Todo: Change user salt when they change their password.
     // Todo: Standardize Error Messages

@@ -40,7 +40,7 @@ public class ApplicationConstants {
     public static final String USER_NAME_CLAIM = "userName";
     public static final String ACCESS_LEVEL_CLAIM = "accessLevel";
     public static final int TOKEN_EXPIRATION_MINUTES = 30;
-    static final int REFRESH_TOKEN_EXPIRATION_MINUTES = TOKEN_EXPIRATION_MINUTES + 10;
+    public static final int REFRESH_TOKEN_EXPIRATION_MINUTES = TOKEN_EXPIRATION_MINUTES + 10;
 
     /**
      * Created by samuel on 7/14/17.

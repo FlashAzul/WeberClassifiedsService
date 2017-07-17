@@ -1,7 +1,6 @@
 package representation;
 
 import application.ApplicationConstants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import model.Address;
 
@@ -38,7 +37,6 @@ public class UserRepresentation {
         this.id = id;
     }
 
-    @JsonIgnore
     public String getPassword () {
         return password;
     }
