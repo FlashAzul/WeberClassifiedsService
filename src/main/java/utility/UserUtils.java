@@ -3,56 +3,17 @@ package utility;
 import model.User;
 import org.springframework.util.StringUtils;
 import repository.UserRepository;
-import representation.ListingRepresentation;
-import representation.ListingSummaryRepresentation;
 import representation.UserRepresentation;
-import model.Listing;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * Created by samuel on 7/6/17.
  * Group of helper methods used with Users
  */
 public class UserUtils {
-
-    public static ListingRepresentation buildListingRepresentation(Listing listing){
-        ListingRepresentation listingRepresentation = new ListingRepresentation();
-        listingRepresentation.setListingId(listing.getListingId());
-        listingRepresentation.setUserId(listing.getUserId());
-        listingRepresentation.setListingText(listing.getListingText());
-        return listingRepresentation;
-    }
-
-    public static List<Listing> buildListingRepresentation(Map listingModels){
-        List<Listing> returnListings = new ArrayList<>();
-        for (Object listing: listingModels.keySet()) {
-            returnListings.add((Listing)listingModels.get(listing));
-        }
-        return returnListings;
-    }
-
-    public static ListingSummaryRepresentation buildListingSummaryRepresentation(Listing listing){
-        ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
-        listingSummaryRepresentation.setListingId(listing.getListingId());
-        listingSummaryRepresentation.setUserId(listing.getUserId());
-        listingSummaryRepresentation.setListingTextSummary(listing.getListingText());
-        return listingSummaryRepresentation;
-
-    }
-
-    public static List<ListingSummaryRepresentation> buildListingSummaryRepresentation(Map listingModels){
-        List<ListingSummaryRepresentation> returnListings = new ArrayList<>();
-        for (Object listing: listingModels.keySet()) {
-            ListingSummaryRepresentation lr = buildListingSummaryRepresentation((Listing)listingModels.get(listing));
-            returnListings.add(lr);
-        }
-        return returnListings;
-    }
 
 
     public static List<UserRepresentation> buildUserPresentation (List<User> userModels) {
