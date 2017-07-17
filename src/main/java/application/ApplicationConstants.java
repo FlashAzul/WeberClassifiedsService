@@ -12,9 +12,11 @@ public class ApplicationConstants {
 
     // Variable Names
     public static final String ID = "id";
+    public static final String LISTING_ID = "listingId";
 
     // Path Variables
     private static final String ID_PATH_VARIABLE = OPEN_BRACE + ID + CLOSE_BRACE;
+    private static final String LISTING_ID_PATH_VARIABLE = OPEN_BRACE + LISTING_ID + CLOSE_BRACE;
 
     // Headers
     public static final String AUTH_TOKEN_HEADER = "AuthToken";
@@ -28,7 +30,9 @@ public class ApplicationConstants {
     public static final String REFRESH_RESOURCE = SERVICE_NAME + SLASH + "refresh";
     public static final String USERS_RESOURCE = SERVICE_NAME + SLASH + "users";
     public static final String USER_RESOURCE = USERS_RESOURCE + SLASH + ID_PATH_VARIABLE;
-    public static final String LISTING_RESOURCE = SERVICE_NAME + SLASH + "listing";
+    public static final String LISTING_RESOURCE = SERVICE_NAME + SLASH + LISTING_ID_PATH_VARIABLE;
+    public static final String LISTINGS_RESOURCE = SERVICE_NAME + SLASH + "listings";
+
 
     // Authentication
     public static final String TOKEN_SIGNATURE_KEY = "X317OlbkDHJd9fQadZgRXC7dZtsRIqCKB&y#0sRjqK6uuS1QXF";

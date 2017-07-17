@@ -4,16 +4,17 @@ import model.User;
 import org.springframework.util.StringUtils;
 import repository.UserRepository;
 import representation.UserRepresentation;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by samuel on 7/6/17.
  * Group of helper methods used with Users
  */
 public class UserUtils {
+
 
     public static List<UserRepresentation> buildUserPresentation (List<User> userModels) {
         List<UserRepresentation> userRepresentations = new ArrayList<>();
