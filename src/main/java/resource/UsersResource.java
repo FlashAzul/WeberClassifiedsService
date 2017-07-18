@@ -2,6 +2,7 @@ package resource;
 
 import application.ApplicationConstants;
 import model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import repository.UserRepository;
 import representation.UserRepresentation;
 import utility.AuthorizationUtils;
 import utility.UserUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
 import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
 import static application.ApplicationConstants.USERS_RESOURCE;
+import static application.ApplicationConstants.USER_NAME;
 
 /**
  * Created by samuel on 7/12/17.
@@ -33,10 +39,22 @@ public class UsersResource {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String authToken) {
+    public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String authToken, @RequestParam(value = USER_NAME,
+            defaultValue = "") String userName) {
+        List<User> users = new ArrayList<>();
+
         if (AuthorizationUtils.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.ADMIN,
                 TOKEN_TYPE_AUTH, userRepository)) {
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.read()));
+            if (StringUtils.isNotEmpty(userName)) {
+                User user = userRepository.getByUserName(userName);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+            else {
+                users.addAll(userRepository.read());
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(users));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");

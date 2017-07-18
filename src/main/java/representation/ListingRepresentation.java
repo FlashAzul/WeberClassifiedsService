@@ -1,7 +1,6 @@
 package representation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.User;
 
 import java.util.List;
 
@@ -15,11 +14,12 @@ public class ListingRepresentation {
     private Long id;
     private String title;
     private String message;
-    private User user;
+    private UserRepresentation user;
     private String price;
     private List<Long> attachmentIds;
 
-    public ListingRepresentation (Long id, String title, String message, User user, List<Long> attachmentIds) {
+    public ListingRepresentation (Long id, String title, String message, UserRepresentation user, List<Long>
+            attachmentIds) {
         this.id = id;
         this.title = title;
         this.message = message;
@@ -62,11 +62,11 @@ public class ListingRepresentation {
         this.message = message;
     }
 
-    public User getUser () {
+    public UserRepresentation getUser () {
         return user;
     }
 
-    public void setUser (User user) {
+    public void setUser (UserRepresentation user) {
         this.user = user;
     }
 

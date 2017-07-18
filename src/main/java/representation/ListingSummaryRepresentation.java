@@ -1,7 +1,6 @@
 package representation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import model.User;
 
 /**
  * Created by Bryan Fritz on 7/15/17.
@@ -14,10 +13,11 @@ public class ListingSummaryRepresentation {
     private String title;
     private String messageSummary;
     private String price;
-    private User user;
+    private UserRepresentation user;
     private Long attachmentId;
 
-    public ListingSummaryRepresentation (Long id, String title, String messageSummary, User user, Long attachmentId) {
+    public ListingSummaryRepresentation (Long id, String title, String messageSummary, UserRepresentation user, Long
+            attachmentId) {
         this.id = id;
         this.title = title;
         this.messageSummary = messageSummary;
@@ -68,11 +68,11 @@ public class ListingSummaryRepresentation {
         this.messageSummary = messageSummary;
     }
 
-    public User getUser () {
+    public UserRepresentation getUser () {
         return user;
     }
 
-    public void setUser (User user) {
+    public void setUser (UserRepresentation user) {
         this.user = user;
     }
 

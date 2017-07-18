@@ -3,6 +3,7 @@ package utility;
 import application.ApplicationConstants;
 import model.Listing;
 import repository.ListingRepository;
+import repository.UserRepository;
 import representation.ListingRepresentation;
 import representation.ListingSummaryRepresentation;
 
@@ -14,8 +15,7 @@ import java.util.List;
  */
 public class ListingUtils {
 
-    public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository
-            listingRepository) {
+    public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository listingRepository, UserRepository userRepository) {
         Listing listing = listingRepository.read(listingRepresentation.getId());
 
         if (listing == null) {
@@ -29,7 +29,7 @@ public class ListingUtils {
         listing.setMessage(listingRepresentation.getMessage());
         listing.setPrice(listingRepresentation.getPrice());
         listing.setTitle(listingRepresentation.getTitle());
-        listing.setUser(listingRepresentation.getUser());
+        listing.setUser(UserUtils.buildUserModel(userRepository, listingRepresentation.getUser()));
         return listing;
 
     }
@@ -37,7 +37,7 @@ public class ListingUtils {
     public static ListingRepresentation buildListingRepresentation (Listing listing) {
         ListingRepresentation listingRepresentation = new ListingRepresentation();
         listingRepresentation.setId(listing.getId());
-        listingRepresentation.setUser(listing.getUser());
+        listingRepresentation.setUser(UserUtils.buildUserPresentation(listing.getUser()));
         listingRepresentation.setMessage(listing.getMessage());
         listingRepresentation.setTitle(listing.getTitle());
         listingRepresentation.setPrice(listing.getPrice());
@@ -56,12 +56,12 @@ public class ListingUtils {
     public static ListingSummaryRepresentation buildListingSummaryRepresentation (Listing listing) {
         ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
         listingSummaryRepresentation.setId(listing.getId());
-        listingSummaryRepresentation.setUser(listing.getUser());
+        listingSummaryRepresentation.setUser(UserUtils.buildUserPresentation(listing.getUser()));
         listingSummaryRepresentation.setPrice(listing.getPrice());
         listingSummaryRepresentation.setTitle(listing.getTitle());
         listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, ApplicationConstants
                 .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH));
-        if (listing.getAttachmentIds().size() > 0) {
+        if (listing.getAttachmentIds() != null && listing.getAttachmentIds().size() > 0) {
             listingSummaryRepresentation.setAttachmentId(listing.getAttachmentIds().get(0));
         }
         return listingSummaryRepresentation;

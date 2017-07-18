@@ -48,18 +48,35 @@ public class CacheListingRepository implements ListingRepository {
 
     @Override
     public Listing read (Long id) {
-        return listingCache.get(id);
+        try {
+            return listingCache.get(id);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void delete (Long id) {
-        listingCache.remove(id);
+        try {
+            listingCache.remove(id);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Listing update (Listing listing) {
-        listingCache.remove(listing.getId());
-        listingCache.put(listing.getId(), listing);
-        return listingCache.get(listing.getId());
+        try {
+            listingCache.remove(listing.getId());
+            listingCache.put(listing.getId(), listing);
+            return listingCache.get(listing.getId());
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

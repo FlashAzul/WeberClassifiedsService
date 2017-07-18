@@ -46,19 +46,38 @@ public class CacheUserRepository implements UserRepository {
 
     @Override
     public User read (Long id) {
-        return userCache.get(id);
+        try {
+            return userCache.get(id);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override
     public User update (User user) {
-        userCache.remove(user.getId());
-        userCache.put(user.getId(), user);
-        return userCache.get(user.getId());
+        try {
+            userCache.remove(user.getId());
+            userCache.put(user.getId(), user);
+            return userCache.get(user.getId());
+        }
+        catch (NullPointerException e) {
+            return null;
+        }
+
     }
 
     @Override
     public void delete (Long id) {
-        userCache.remove(id);
+        try {
+            userCache.remove(id);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

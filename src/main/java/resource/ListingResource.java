@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
-import representation.ListingSummaryRepresentation;
 import utility.AuthorizationUtils;
 import utility.ListingUtils;
 
@@ -41,17 +40,16 @@ public class ListingResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getListing (@PathVariable(ID) Long id, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        Listing returnListing = listingRepository.read(id);
 
         if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
                 userRepository)) {
+            Listing returnListing = listingRepository.read(id);
             if (returnListing != null) {
                 ListingRepresentation listingRepresentation = ListingUtils.buildListingRepresentation(returnListing);
                 return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " +
-                        "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not exist.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not exist.");
             }
         }
         else {
@@ -63,15 +61,14 @@ public class ListingResource {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateListing (@RequestBody ListingRepresentation listing, @PathVariable(ID) Long id,
             @RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        Listing returnListing = listingRepository.read(id);
 
         if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
                 userRepository)) {
+            Listing returnListing = listingRepository.read(id);
             if (returnListing != null) {
-                String replace = listing.getMessage();
-                returnListing.setMessage(replace);
-                ListingSummaryRepresentation lr = ListingUtils.buildListingSummaryRepresentation(returnListing);
-                return ResponseEntity.status(HttpStatus.OK).body(lr);
+                returnListing.setMessage(listing.getMessage());
+                ListingRepresentation listingRepresentation = ListingUtils.buildListingRepresentation(returnListing);
+                return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
             }
             else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This listing does not exist");
@@ -86,10 +83,10 @@ public class ListingResource {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteListing (@PathVariable(ID) Long id, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        Listing returnListing = listingRepository.read(id);
 
         if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
                 userRepository)) {
+            Listing returnListing = listingRepository.read(id);
             if (returnListing != null) {
                 listingRepository.delete(returnListing.getId());
                 return ResponseEntity.status(HttpStatus.OK).body("Listing " + id + " successfully deleted");

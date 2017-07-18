@@ -12,6 +12,7 @@ public class ApplicationConstants {
 
     // Variable Names
     public static final String ID = "id";
+    public static final String USER_NAME = "username";
 
     // Path Variables
     private static final String ID_PATH_VARIABLE = OPEN_BRACE + ID + CLOSE_BRACE;
@@ -28,8 +29,8 @@ public class ApplicationConstants {
     public static final String REFRESH_RESOURCE = SERVICE_NAME + SLASH + "refresh";
     public static final String USERS_RESOURCE = SERVICE_NAME + SLASH + "users";
     public static final String USER_RESOURCE = USERS_RESOURCE + SLASH + ID_PATH_VARIABLE;
-    public static final String LISTING_RESOURCE = SERVICE_NAME + SLASH + ID_PATH_VARIABLE;
     public static final String LISTINGS_RESOURCE = SERVICE_NAME + SLASH + "listings";
+    public static final String LISTING_RESOURCE = LISTINGS_RESOURCE + SLASH + ID_PATH_VARIABLE;
     public static final Integer LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH = 50;
 
     // Authentication
