@@ -1,21 +1,22 @@
 package repository;
 
 import model.Listing;
-import java.util.List;
 
+import java.util.List;
 
 /**
  * Created by Inca1 on 7/16/2017.
  */
 public interface ListingRepository {
 
-    List<Listing> getAllListings();
+    Listing create (Listing listing);
 
-    Listing getListing(int listingNumber);
+    Listing update (Listing listing);
 
-    void addListing(Listing listing);
+    Listing read (Long id);
 
-    int getListingNumber();
+    List<Listing> read ();
 
-    void deleteListing(int listingId);
+    void delete (Long id);
+
 }

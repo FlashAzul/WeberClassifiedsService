@@ -34,10 +34,9 @@ public class UsersResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String authToken) {
-        if (AuthorizationUtils
-                .validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
-                        userRepository)) {
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.getAll()));
+        if (AuthorizationUtils.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.ADMIN,
+                TOKEN_TYPE_AUTH, userRepository)) {
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.read()));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
@@ -45,19 +44,19 @@ public class UsersResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser (@RequestBody UserRepresentation user,
-                                      @RequestHeader(AUTH_TOKEN_HEADER) String token) {
+    public ResponseEntity createUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
+            token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
-                userRepository)) {
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+                TOKEN_TYPE_AUTH, userRepository)) {
             if (userRepository.getByUserName(user.getUserName()) != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("A user with username '" + user.getUserName() + "' already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
+                        + "' already exists.");
             }
             User newUser = UserUtils.buildUserModel(userRepository, user);
             userRepository.create(newUser);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(UserUtils.buildUserPresentation(userRepository.getByUserName(user.getUserName())));
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository
+                    .getByUserName(user.getUserName())));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");

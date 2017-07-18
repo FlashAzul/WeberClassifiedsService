@@ -29,11 +29,10 @@ public class RefreshResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity refreshAuthentication (@RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        if (AuthorizationUtils
-                .validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD, TOKEN_TYPE_REFRESH,
-                        userRepository)) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(AuthorizationUtils.refreshAuthentication(token, userRepository));
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                TOKEN_TYPE_REFRESH, userRepository)) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthorizationUtils.refreshAuthentication(token,
+                    userRepository));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");

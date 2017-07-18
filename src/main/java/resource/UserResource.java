@@ -37,9 +37,9 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getUserById (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
-                userRepository)) {
-            User user = userRepository.getById(userId);
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+                TOKEN_TYPE_AUTH, userRepository)) {
+            User user = userRepository.read(userId);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " + "found");
             }
@@ -51,22 +51,22 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity updateUser (@RequestBody UserRepresentation user,
-                                      @RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
-                userRepository)) {
+    public ResponseEntity updateUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
+            token) {
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+                TOKEN_TYPE_AUTH, userRepository)) {
             if (!userRepository.getByUserName(user.getUserName()).getId().equals(user.getId())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("A user with username '" + user.getUserName() + "' already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
+                        + "' already exists.");
             }
             User updatedUserModel = UserUtils.buildUserModel(userRepository, user);
             if (updatedUserModel == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("User with Id: " + user.getId() + " not " + "found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + user.getId() + " not " +
+                        "found");
             }
             userRepository.update(updatedUserModel);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(UserUtils.buildUserPresentation(userRepository.getById(updatedUserModel.getId())));
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.read
+                    (updatedUserModel.getId())));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
@@ -76,13 +76,13 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN, TOKEN_TYPE_AUTH,
-                userRepository)) {
-            User user = userRepository.getById(userId);
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+                TOKEN_TYPE_AUTH, userRepository)) {
+            User user = userRepository.read(userId);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " + "found");
             }
-            userRepository.delete(user);
+            userRepository.delete(userId);
             return ResponseEntity.status(HttpStatus.OK).body("User " + userId + " successfully deleted");
         }
         else {

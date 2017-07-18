@@ -17,6 +17,7 @@ public class UserRepresentation {
     private String email;
     private String firstName;
     private String lastName;
+    private String phone;
     private String password;
     private Address address;
     private ApplicationConstants.AccessLevel accessLevel;
@@ -35,6 +36,14 @@ public class UserRepresentation {
 
     public void setId (Long id) {
         this.id = id;
+    }
+
+    public String getPhone () {
+        return phone;
+    }
+
+    public void setPhone (String phone) {
+        this.phone = phone;
     }
 
     public String getPassword () {

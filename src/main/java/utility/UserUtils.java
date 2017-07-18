@@ -4,17 +4,16 @@ import model.User;
 import org.springframework.util.StringUtils;
 import repository.UserRepository;
 import representation.UserRepresentation;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Created by samuel on 7/6/17.
  * Group of helper methods used with Users
  */
 public class UserUtils {
-
 
     public static List<UserRepresentation> buildUserPresentation (List<User> userModels) {
         List<UserRepresentation> userRepresentations = new ArrayList<>();
@@ -33,13 +32,14 @@ public class UserUtils {
         userRepresentation.setEmail(userModel.getEmail());
         userRepresentation.setFirstName(userModel.getFirstName());
         userRepresentation.setLastName(userModel.getLastName());
+        userRepresentation.setPhone(userModel.getPhone());
         userRepresentation.setwNumber(userModel.getwNumber());
         userRepresentation.setAccessLevel(userModel.getAccessLevel());
         return userRepresentation;
     }
 
     public static User buildUserModel (UserRepository userRepository, UserRepresentation userRepresentation) {
-        User userModel = userRepository.getById(userRepresentation.getId());
+        User userModel = userRepository.read(userRepresentation.getId());
         if (userModel == null) {
             userModel = new User();
         }
@@ -56,6 +56,7 @@ public class UserUtils {
         userModel.setEmail(userRepresentation.getEmail());
         userModel.setFirstName(userRepresentation.getFirstName());
         userModel.setLastName(userRepresentation.getLastName());
+        userModel.setPhone(userRepresentation.getPhone());
         userModel.setUserName(userRepresentation.getUserName());
         userModel.setwNumber(userRepresentation.getwNumber());
         return userModel;

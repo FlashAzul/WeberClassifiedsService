@@ -10,15 +10,16 @@ import java.util.List;
  */
 public interface UserRepository {
 
-    void create (User user);
+    User create (User user);
 
-    void delete (User user);
+    User update (User user);
 
-    void update (User user);
+    List<User> read ();
 
-    User getById (Long id);
+    User read (Long id);
+
+    void delete (Long id);
 
     User getByUserName (String userName);
 
-    List<User> getAll ();
 }

@@ -21,8 +21,9 @@ import static application.ApplicationConstants.AUTHORIZATION_REQUEST_HEADER;
  * Created by samuel on 7/6/17.
  * Class Representing the /authentication endpoint of the service.
  */
-@CrossOrigin(origins = "*")
+
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(AUTHENTICATION_RESOURCE)
 public class AuthenticationResource {
 

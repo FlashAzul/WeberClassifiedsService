@@ -19,38 +19,49 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CacheUserRepository implements UserRepository {
 
     private static Map<Long, User> userCache = new ConcurrentHashMap<>();
+    private static Long nextAvailableId = 1L;
 
     static {
         Address adr1 = new Address("20 s state", "Slc", "Ut", "84101");
         String password = AuthenticationUtils.hashPassword("password", "23423423525");
         User adminDefault = new User("admin", "w12345", "test@mail.com", "Darth", "Vadar", adr1, password,
                 "23423423525", ApplicationConstants.AccessLevel.ADMIN);
-        adminDefault.setId(1L);
+        adminDefault.setId(nextAvailableId);
+        nextAvailableId++;
         userCache.put(adminDefault.getId(), adminDefault);
     }
 
-    public void create (User user) {
-        Long newUserId = (long) (userCache.size() + 1);
-        user.setId(newUserId);
-        userCache.put(newUserId, user);
+    @Override
+    public User create (User user) {
+        user.setId(nextAvailableId);
+        nextAvailableId++;
+        userCache.put(user.getId(), user);
+        return userCache.get(user.getId());
     }
 
-    public void delete (User user) {
-        userCache.remove(user.getId());
+    @Override
+    public List<User> read () {
+        return new ArrayList<>(userCache.values());
     }
 
-    public void update (User user) {
+    @Override
+    public User read (Long id) {
+        return userCache.get(id);
+    }
+
+    @Override
+    public User update (User user) {
         userCache.remove(user.getId());
         userCache.put(user.getId(), user);
+        return userCache.get(user.getId());
     }
 
-    public User getById (Long id) {
-        if (id != null) {
-            return userCache.get(id);
-        }
-        return null;
+    @Override
+    public void delete (Long id) {
+        userCache.remove(id);
     }
 
+    @Override
     public User getByUserName (String userName) {
         for (User user : userCache.values()) {
             if (user.getUserName().equals(userName)) {
@@ -58,10 +69,6 @@ public class CacheUserRepository implements UserRepository {
             }
         }
         return null;
-    }
-
-    public List<User> getAll () {
-        return new ArrayList<>(userCache.values());
     }
 
 }

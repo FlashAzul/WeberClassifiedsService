@@ -1,8 +1,11 @@
 package utility;
 
+import application.ApplicationConstants;
 import model.Listing;
+import repository.ListingRepository;
 import representation.ListingRepresentation;
 import representation.ListingSummaryRepresentation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,37 +13,65 @@ import java.util.List;
  * Created by Inca1 on 7/16/2017.
  */
 public class ListingUtils {
-    public static ListingRepresentation buildListingRepresentation(Listing listing){
+
+    public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository
+            listingRepository) {
+        Listing listing = listingRepository.read(listingRepresentation.getId());
+
+        if (listing == null) {
+            listing = new Listing();
+        }
+        else {
+            listing.setId(listingRepresentation.getId());
+        }
+
+        listing.setAttachmentIds(listingRepresentation.getAttachmentIds());
+        listing.setMessage(listingRepresentation.getMessage());
+        listing.setPrice(listingRepresentation.getPrice());
+        listing.setTitle(listingRepresentation.getTitle());
+        listing.setUser(listingRepresentation.getUser());
+        return listing;
+
+    }
+
+    public static ListingRepresentation buildListingRepresentation (Listing listing) {
         ListingRepresentation listingRepresentation = new ListingRepresentation();
-        listingRepresentation.setListingId(listing.getListingId());
-        listingRepresentation.setUserId(listing.getUserId());
-        listingRepresentation.setListingText(listing.getListingText());
+        listingRepresentation.setId(listing.getId());
+        listingRepresentation.setUser(listing.getUser());
+        listingRepresentation.setMessage(listing.getMessage());
+        listingRepresentation.setTitle(listing.getTitle());
+        listingRepresentation.setPrice(listing.getPrice());
+        listingRepresentation.setAttachmentIds(listing.getAttachmentIds());
         return listingRepresentation;
     }
 
-    public static List<Listing> buildListingRepresentation(List<Listing> listingModels){
-        List<Listing> returnListings = new ArrayList<>();
-
-        for (Listing listing : listingModels) {
-            returnListings.add(listing);
+    public static List<ListingRepresentation> buildListingRepresentation (List<Listing> listings) {
+        List<ListingRepresentation> returnListings = new ArrayList<>();
+        for (Listing listing : listings) {
+            returnListings.add(buildListingRepresentation(listing));
         }
         return returnListings;
     }
 
-    public static ListingSummaryRepresentation buildListingSummaryRepresentation(Listing listing){
+    public static ListingSummaryRepresentation buildListingSummaryRepresentation (Listing listing) {
         ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
-        listingSummaryRepresentation.setListingId(listing.getListingId());
-        listingSummaryRepresentation.setUserId(listing.getUserId());
-        listingSummaryRepresentation.setListingTextSummary(listing.getListingText());
+        listingSummaryRepresentation.setId(listing.getId());
+        listingSummaryRepresentation.setUser(listing.getUser());
+        listingSummaryRepresentation.setPrice(listing.getPrice());
+        listingSummaryRepresentation.setTitle(listing.getTitle());
+        listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, ApplicationConstants
+                .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH));
+        if (listing.getAttachmentIds().size() > 0) {
+            listingSummaryRepresentation.setAttachmentId(listing.getAttachmentIds().get(0));
+        }
         return listingSummaryRepresentation;
-
     }
 
-    public static List<ListingSummaryRepresentation> buildListingSummaryRepresentation(List<Listing> listingModels){
+    public static List<ListingSummaryRepresentation> buildListingSummaryRepresentation (List<Listing> listings) {
         List<ListingSummaryRepresentation> returnListings = new ArrayList<>();
-        for (Listing listing : listingModels) {
-            ListingSummaryRepresentation lr = buildListingSummaryRepresentation(listing);
-            returnListings.add(lr);
+        for (Listing listing : listings) {
+            ListingSummaryRepresentation listingSummaryRepresentation = buildListingSummaryRepresentation(listing);
+            returnListings.add(listingSummaryRepresentation);
         }
         return returnListings;
     }

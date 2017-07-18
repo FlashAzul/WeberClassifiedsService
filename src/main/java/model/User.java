@@ -12,6 +12,7 @@ public class User {
     private Long id;
     private String userName;
     private String wNumber;
+    private String phone;
     private String email;
     private String firstName;
     private String lastName;
@@ -20,8 +21,7 @@ public class User {
     private String salt;
     private ApplicationConstants.AccessLevel accessLevel;
 
-    public User (String userName, String wNumber, String email, String firstName, String lastName, Address address,
-                 String hashedPassword, String salt, ApplicationConstants.AccessLevel accessLevel) {
+    public User (String userName, String wNumber, String email, String firstName, String lastName, Address address, String hashedPassword, String salt, ApplicationConstants.AccessLevel accessLevel) {
         this.userName = userName;
         this.wNumber = wNumber;
         this.email = email;
@@ -34,6 +34,14 @@ public class User {
     }
 
     public User () {
+    }
+
+    public String getPhone () {
+        return phone;
+    }
+
+    public void setPhone (String phone) {
+        this.phone = phone;
     }
 
     public Long getId () {

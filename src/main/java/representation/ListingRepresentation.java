@@ -1,11 +1,16 @@
-package model;
+package representation;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import model.User;
 
 import java.util.List;
 
 /**
- * Created by Bryan Fritz on 7/15/2017.
+ * Created by Bryan Fritz on 7/15/17.
  */
-public class Listing {
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ListingRepresentation {
 
     private Long id;
     private String title;
@@ -14,30 +19,15 @@ public class Listing {
     private String price;
     private List<Long> attachmentIds;
 
-    public Listing (Long id, String title, String message, User user) {
+    public ListingRepresentation (Long id, String title, String message, User user, List<Long> attachmentIds) {
         this.id = id;
         this.title = title;
         this.message = message;
         this.user = user;
-    }
-
-    public Listing () {
-    }
-
-    public String getPrice () {
-        return price;
-    }
-
-    public void setPrice (String price) {
-        this.price = price;
-    }
-
-    public List<Long> getAttachmentIds () {
-        return attachmentIds;
-    }
-
-    public void setAttachmentIds (List<Long> attachmentIds) {
         this.attachmentIds = attachmentIds;
+    }
+
+    public ListingRepresentation () {
     }
 
     public Long getId () {
@@ -46,6 +36,14 @@ public class Listing {
 
     public void setId (Long id) {
         this.id = id;
+    }
+
+    public String getPrice () {
+        return price;
+    }
+
+    public void setPrice (String price) {
+        this.price = price;
     }
 
     public String getTitle () {
@@ -70,5 +68,13 @@ public class Listing {
 
     public void setUser (User user) {
         this.user = user;
+    }
+
+    public List<Long> getAttachmentIds () {
+        return attachmentIds;
+    }
+
+    public void setAttachmentIds (List<Long> attachmentIds) {
+        this.attachmentIds = attachmentIds;
     }
 }

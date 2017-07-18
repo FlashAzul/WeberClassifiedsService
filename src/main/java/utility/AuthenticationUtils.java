@@ -69,15 +69,15 @@ public class AuthenticationUtils {
     public static AuthenticationRepresentation buildAuthenticationRepresentation (UserRepresentation user) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, TOKEN_EXPIRATION_MINUTES);
-        String authToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_AUTH)
-                .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
-                .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())
-                .signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        String authToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_AUTH).claim
+                (USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel()).setIssuedAt
+                (Calendar.getInstance().getTime()).setExpiration(calendar.getTime()).signWith(SignatureAlgorithm
+                .HS256, TOKEN_SIGNATURE_KEY).compact();
         calendar.add(Calendar.MINUTE, REFRESH_TOKEN_EXPIRATION_MINUTES);
-        String refreshToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_REFRESH)
-                .claim(USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel())
-                .setIssuedAt(Calendar.getInstance().getTime()).setExpiration(calendar.getTime())
-                .signWith(SignatureAlgorithm.HS256, TOKEN_SIGNATURE_KEY).compact();
+        String refreshToken = Jwts.builder().setIssuer(TOKEN_ISSUER).claim(TOKEN_TYPE, TOKEN_TYPE_REFRESH).claim
+                (USER_NAME_CLAIM, user.getUserName()).claim(ACCESS_LEVEL_CLAIM, user.getAccessLevel()).setIssuedAt
+                (Calendar.getInstance().getTime()).setExpiration(calendar.getTime()).signWith(SignatureAlgorithm
+                .HS256, TOKEN_SIGNATURE_KEY).compact();
         return new AuthenticationRepresentation(authToken, refreshToken);
     }
 

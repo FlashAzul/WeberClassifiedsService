@@ -18,16 +18,15 @@ import static application.ApplicationConstants.USER_NAME_CLAIM;
  */
 public class AuthorizationUtils {
 
-    public static Boolean validateUserAuthorization (String token,
-                                                     ApplicationConstants.AccessLevel minimumAccessLevelRequired,
-                                                     String tokenType, UserRepository userRepository) {
+    public static Boolean validateUserAuthorization (String token, ApplicationConstants.AccessLevel
+            minimumAccessLevelRequired, String tokenType, UserRepository userRepository) {
         try {
             Jws<Claims> claimsJws = getClaimsFromToken(token);
             String userName = getClaimFromClaims(claimsJws, USER_NAME_CLAIM);
             String authType = getClaimFromClaims(claimsJws, TOKEN_TYPE);
             User user = userRepository.getByUserName(userName);
-            return (user != null && user.getAccessLevel().ordinal() <= minimumAccessLevelRequired.ordinal() && authType
-                    .equals(tokenType));
+            return (user != null && user.getAccessLevel().ordinal() <= minimumAccessLevelRequired.ordinal() &&
+                    authType.equals(tokenType));
         }
         catch (Exception e) {
             return false;
