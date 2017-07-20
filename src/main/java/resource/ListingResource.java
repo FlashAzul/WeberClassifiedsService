@@ -49,7 +49,9 @@ public class ListingResource {
                 return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not exist.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " +
+                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not " +
+                        "exist.");
             }
         }
         else {

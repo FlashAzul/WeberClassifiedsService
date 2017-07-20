@@ -12,16 +12,38 @@ public class Listing {
     private String message;
     private User user;
     private String price;
+    private String type;
+    private String category;
     private List<Long> attachmentIds;
 
-    public Listing (Long id, String title, String message, User user) {
+    public Listing (Long id, String title, String message, User user, String type, String category, List<Long>
+            attachmentIds) {
         this.id = id;
         this.title = title;
         this.message = message;
         this.user = user;
+        this.type = type;
+        this.category = category;
+        this.attachmentIds = attachmentIds;
     }
 
     public Listing () {
+    }
+
+    public String getType () {
+        return type;
+    }
+
+    public void setType (String type) {
+        this.type = type;
+    }
+
+    public String getCategory () {
+        return category;
+    }
+
+    public void setCategory (String category) {
+        this.category = category;
     }
 
     public String getPrice () {

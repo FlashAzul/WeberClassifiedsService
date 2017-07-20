@@ -15,7 +15,8 @@ import java.util.List;
  */
 public class ListingUtils {
 
-    public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository listingRepository, UserRepository userRepository) {
+    public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository
+            listingRepository, UserRepository userRepository) {
         Listing listing = listingRepository.read(listingRepresentation.getId());
 
         if (listing == null) {
@@ -29,7 +30,9 @@ public class ListingUtils {
         listing.setMessage(listingRepresentation.getMessage());
         listing.setPrice(listingRepresentation.getPrice());
         listing.setTitle(listingRepresentation.getTitle());
-        listing.setUser(UserUtils.buildUserModel(userRepository, listingRepresentation.getUser()));
+        listing.setCategory(listingRepresentation.getCategory());
+        listing.setType(listingRepresentation.getType());
+        listing.setUser(userRepository.read(listingRepresentation.getUserId()));
         return listing;
 
     }
@@ -37,10 +40,12 @@ public class ListingUtils {
     public static ListingRepresentation buildListingRepresentation (Listing listing) {
         ListingRepresentation listingRepresentation = new ListingRepresentation();
         listingRepresentation.setId(listing.getId());
-        listingRepresentation.setUser(UserUtils.buildUserPresentation(listing.getUser()));
+        listingRepresentation.setUserId(listing.getUser().getId());
         listingRepresentation.setMessage(listing.getMessage());
         listingRepresentation.setTitle(listing.getTitle());
         listingRepresentation.setPrice(listing.getPrice());
+        listingRepresentation.setCategory(listing.getCategory());
+        listingRepresentation.setType(listing.getType());
         listingRepresentation.setAttachmentIds(listing.getAttachmentIds());
         return listingRepresentation;
     }
@@ -56,11 +61,13 @@ public class ListingUtils {
     public static ListingSummaryRepresentation buildListingSummaryRepresentation (Listing listing) {
         ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
         listingSummaryRepresentation.setId(listing.getId());
-        listingSummaryRepresentation.setUser(UserUtils.buildUserPresentation(listing.getUser()));
+        listingSummaryRepresentation.setUserId(listing.getUser().getId());
         listingSummaryRepresentation.setPrice(listing.getPrice());
         listingSummaryRepresentation.setTitle(listing.getTitle());
         listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, ApplicationConstants
                 .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH));
+        listingSummaryRepresentation.setCategory(listing.getCategory());
+        listingSummaryRepresentation.setType(listing.getType());
         if (listing.getAttachmentIds() != null && listing.getAttachmentIds().size() > 0) {
             listingSummaryRepresentation.setAttachmentId(listing.getAttachmentIds().get(0));
         }

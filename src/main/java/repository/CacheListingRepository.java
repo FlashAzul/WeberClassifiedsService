@@ -27,8 +27,10 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault = new User("admin", "w12345", "test@mail.com", "Darth", "Vadar", adr1, password,
                 "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault.setId(nextAvailableId);
-        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " +
-                "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault);
+        List<Long> attachmentIds = new ArrayList<>();
+        Long attachmentId = 1L;
+        attachmentIds.add(attachmentId);
+        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "dummy type", "dummy category", attachmentIds);
         nextAvailableId++;
         listingCache.put(listing.getId(), listing);
     }

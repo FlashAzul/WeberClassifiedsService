@@ -14,20 +14,48 @@ public class ListingRepresentation {
     private Long id;
     private String title;
     private String message;
-    private UserRepresentation user;
+    private Long userId;
     private String price;
+    private String type;
+    private String category;
     private List<Long> attachmentIds;
 
-    public ListingRepresentation (Long id, String title, String message, UserRepresentation user, List<Long>
-            attachmentIds) {
+    public ListingRepresentation (Long id, String title, String message, Long userId, List<Long> attachmentIds,
+            String type, String category) {
         this.id = id;
         this.title = title;
         this.message = message;
-        this.user = user;
+        this.userId = userId;
         this.attachmentIds = attachmentIds;
+        this.type = type;
+        this.category = category;
     }
 
     public ListingRepresentation () {
+    }
+
+    public Long getUserId () {
+        return userId;
+    }
+
+    public void setUserId (Long userId) {
+        this.userId = userId;
+    }
+
+    public String getType () {
+        return type;
+    }
+
+    public void setType (String type) {
+        this.type = type;
+    }
+
+    public String getCategory () {
+        return category;
+    }
+
+    public void setCategory (String category) {
+        this.category = category;
     }
 
     public Long getId () {
@@ -60,14 +88,6 @@ public class ListingRepresentation {
 
     public void setMessage (String message) {
         this.message = message;
-    }
-
-    public UserRepresentation getUser () {
-        return user;
-    }
-
-    public void setUser (UserRepresentation user) {
-        this.user = user;
     }
 
     public List<Long> getAttachmentIds () {

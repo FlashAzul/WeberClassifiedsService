@@ -7,12 +7,10 @@ package application;
 public class ToDo {
 
     // Features:
-    // Todo: Add Listing resource.
     // Todo: Add Listing Attachment Resource.
-    // Todo: Add filter by name to Users Resource.
-    // Todo: Add filter by keyword to Users Resource.
     // Todo: Add validation error handling around each resource.
     // Todo: Add database repository.
+    // Todo: Add required field validation around the resources
 
     // Refactoring
     // Todo: Remove instances of null in the representation layer.
