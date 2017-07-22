@@ -32,6 +32,7 @@ public class ApplicationConstants {
     public static final String LISTINGS_RESOURCE = SERVICE_NAME + SLASH + "listings";
     public static final String LISTING_RESOURCE = LISTINGS_RESOURCE + SLASH + ID_PATH_VARIABLE;
     public static final Integer LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH = 50;
+    public static final String PING_RESOURCE = SERVICE_NAME + SLASH + "ping";
 
     // Authentication
     public static final String TOKEN_SIGNATURE_KEY = "X317OlbkDHJd9fQadZgRXC7dZtsRIqCKB&y#0sRjqK6uuS1QXF";

@@ -16,14 +16,15 @@ public class Listing {
     private String category;
     private List<Long> attachmentIds;
 
-    public Listing (Long id, String title, String message, User user, String type, String category, List<Long>
-            attachmentIds) {
+    public Listing (Long id, String title, String message, User user, String type, String category, String price,
+            List<Long> attachmentIds) {
         this.id = id;
         this.title = title;
         this.message = message;
         this.user = user;
         this.type = type;
         this.category = category;
+        this.price = price;
         this.attachmentIds = attachmentIds;
     }
 

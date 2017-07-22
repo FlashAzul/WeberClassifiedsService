@@ -43,7 +43,7 @@ public class UsersResource {
             defaultValue = "") String userName) {
         List<User> users = new ArrayList<>();
 
-        if (AuthorizationUtils.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.STANDARD,
                 TOKEN_TYPE_AUTH, userRepository)) {
             if (StringUtils.isNotEmpty(userName)) {
                 User user = userRepository.getByUserName(userName);
@@ -54,7 +54,7 @@ public class UsersResource {
             else {
                 users.addAll(userRepository.read());
             }
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(users));
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(users));
         }
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
@@ -65,7 +65,7 @@ public class UsersResource {
     public ResponseEntity createUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
             token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
                 TOKEN_TYPE_AUTH, userRepository)) {
             if (userRepository.getByUserName(user.getUserName()) != null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
@@ -73,7 +73,7 @@ public class UsersResource {
             }
             User newUser = UserUtils.buildUserModel(userRepository, user);
             userRepository.create(newUser);
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(userRepository
                     .getByUserName(user.getUserName())));
         }
         else {

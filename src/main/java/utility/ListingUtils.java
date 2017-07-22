@@ -6,6 +6,7 @@ import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
 import representation.ListingSummaryRepresentation;
+import representation.UserRepresentation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,8 @@ public class ListingUtils {
 
     public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository
             listingRepository, UserRepository userRepository) {
-        Listing listing = listingRepository.read(listingRepresentation.getId());
 
+        Listing listing = listingRepository.read(listingRepresentation.getId());
         if (listing == null) {
             listing = new Listing();
         }
@@ -32,15 +33,17 @@ public class ListingUtils {
         listing.setTitle(listingRepresentation.getTitle());
         listing.setCategory(listingRepresentation.getCategory());
         listing.setType(listingRepresentation.getType());
-        listing.setUser(userRepository.read(listingRepresentation.getUserId()));
+        listing.setUser(userRepository.read(listingRepresentation.getUserRepresentation().getId()));
         return listing;
-
     }
 
     public static ListingRepresentation buildListingRepresentation (Listing listing) {
         ListingRepresentation listingRepresentation = new ListingRepresentation();
         listingRepresentation.setId(listing.getId());
-        listingRepresentation.setUserId(listing.getUser().getId());
+        UserRepresentation userRepresentation = UserUtils.buildUserRepresentation(listing.getUser());
+        userRepresentation.setPassword("");
+        userRepresentation.setAccessLevel(null);
+        listingRepresentation.setUserRepresentation(userRepresentation);
         listingRepresentation.setMessage(listing.getMessage());
         listingRepresentation.setTitle(listing.getTitle());
         listingRepresentation.setPrice(listing.getPrice());
@@ -61,7 +64,10 @@ public class ListingUtils {
     public static ListingSummaryRepresentation buildListingSummaryRepresentation (Listing listing) {
         ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
         listingSummaryRepresentation.setId(listing.getId());
-        listingSummaryRepresentation.setUserId(listing.getUser().getId());
+        UserRepresentation userRepresentation = UserUtils.buildUserRepresentation(listing.getUser());
+        userRepresentation.setPassword("");
+        userRepresentation.setAccessLevel(null);
+        listingSummaryRepresentation.setUserRepresentation(userRepresentation);
         listingSummaryRepresentation.setPrice(listing.getPrice());
         listingSummaryRepresentation.setTitle(listing.getTitle());
         listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, ApplicationConstants

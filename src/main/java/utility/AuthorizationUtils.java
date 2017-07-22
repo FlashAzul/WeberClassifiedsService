@@ -37,7 +37,7 @@ public class AuthorizationUtils {
         Jws<Claims> claimsJws = getClaimsFromToken(token);
         String userName = getClaimFromClaims(claimsJws, USER_NAME_CLAIM);
         User user = userRepository.getByUserName(userName);
-        return AuthenticationUtils.buildAuthenticationRepresentation(UserUtils.buildUserPresentation(user));
+        return AuthenticationUtils.buildAuthenticationRepresentation(UserUtils.buildUserRepresentation(user));
 
     }
 

@@ -22,8 +22,8 @@ import static application.ApplicationConstants.AUTHORIZATION_REQUEST_HEADER;
  * Class Representing the /authentication endpoint of the service.
  */
 
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping(AUTHENTICATION_RESOURCE)
 public class AuthenticationResource {
 
@@ -42,8 +42,7 @@ public class AuthenticationResource {
         User user = userRepository.getByUserName(userName);
         if (user != null) {
             if (user.getHashedPassword().equals(AuthenticationUtils.hashPassword(password, user.getSalt()))) {
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtils
-                        .buildAuthenticationRepresentation(UserUtils.buildUserPresentation(user)));
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtils.buildAuthenticationRepresentation(UserUtils.buildUserRepresentation(user)));
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Your username and password were rejected...");

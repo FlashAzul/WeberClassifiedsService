@@ -14,18 +14,19 @@ public class ListingRepresentation {
     private Long id;
     private String title;
     private String message;
-    private Long userId;
+    private UserRepresentation userRepresentation;
     private String price;
     private String type;
     private String category;
     private List<Long> attachmentIds;
 
-    public ListingRepresentation (Long id, String title, String message, Long userId, List<Long> attachmentIds,
+    public ListingRepresentation (Long id, String title, String message, UserRepresentation userRepresentation,
+            List<Long> attachmentIds,
             String type, String category) {
         this.id = id;
         this.title = title;
         this.message = message;
-        this.userId = userId;
+        this.userRepresentation = userRepresentation;
         this.attachmentIds = attachmentIds;
         this.type = type;
         this.category = category;
@@ -34,12 +35,12 @@ public class ListingRepresentation {
     public ListingRepresentation () {
     }
 
-    public Long getUserId () {
-        return userId;
+    public UserRepresentation getUserRepresentation () {
+        return userRepresentation;
     }
 
-    public void setUserId (Long userId) {
-        this.userId = userId;
+    public void setUserRepresentation (UserRepresentation userRepresentation) {
+        this.userRepresentation = userRepresentation;
     }
 
     public String getType () {

@@ -37,11 +37,11 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getUserById (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
                 TOKEN_TYPE_AUTH, userRepository)) {
             User user = userRepository.read(userId);
             if (user != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(user));
+                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(user));
             }
             else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " + "found");
@@ -56,7 +56,7 @@ public class UserResource {
     public ResponseEntity updateUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
             token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
                 TOKEN_TYPE_AUTH, userRepository)) {
 
             if (userRepository.getByUserName(user.getUserName()) != null) {
@@ -64,9 +64,9 @@ public class UserResource {
                         + "' already exists.");
             }
             User updatedUserModel = UserUtils.buildUserModel(userRepository, user);
-            if (updatedUserModel != null) {
+            if (updatedUserModel.getId() != null) {
                 userRepository.update(updatedUserModel);
-                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserPresentation(userRepository.read
+                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(userRepository.read
                         (updatedUserModel.getId())));
             }
             else {
@@ -82,7 +82,7 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.ADMIN,
+        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
                 TOKEN_TYPE_AUTH, userRepository)) {
             User user = userRepository.read(userId);
             if (user != null) {

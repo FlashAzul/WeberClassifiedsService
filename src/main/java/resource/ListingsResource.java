@@ -28,8 +28,9 @@ import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
 /**
  * Created by samuel on 7/15/17.
  */
-@RestController
+
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping(LISTINGS_RESOURCE)
 public class ListingsResource {
 

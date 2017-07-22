@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class UserUtils {
 
-    public static List<UserRepresentation> buildUserPresentation (List<User> userModels) {
+    public static List<UserRepresentation> buildUserRepresentation (List<User> userModels) {
         List<UserRepresentation> userRepresentations = new ArrayList<>();
         for (User userModel : userModels) {
-            UserRepresentation userRepresentation = buildUserPresentation(userModel);
+            UserRepresentation userRepresentation = buildUserRepresentation(userModel);
             userRepresentations.add(userRepresentation);
         }
         return userRepresentations;
     }
 
-    public static UserRepresentation buildUserPresentation (User userModel) {
+    public static UserRepresentation buildUserRepresentation (User userModel) {
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setId(userModel.getId());
         userRepresentation.setUserName(userModel.getUserName());
@@ -42,6 +42,9 @@ public class UserUtils {
         User userModel = userRepository.read(userRepresentation.getId());
         if (userModel == null) {
             userModel = new User();
+        }
+        else {
+            userModel.setId(userRepresentation.getId());
         }
         if (StringUtils.isEmpty(userModel.getSalt()) && !StringUtils.isEmpty(userRepresentation.getPassword())) {
             SecureRandom random = new SecureRandom();

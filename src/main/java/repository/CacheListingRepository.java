@@ -30,7 +30,9 @@ public class CacheListingRepository implements ListingRepository {
         List<Long> attachmentIds = new ArrayList<>();
         Long attachmentId = 1L;
         attachmentIds.add(attachmentId);
-        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "dummy type", "dummy category", attachmentIds);
+        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " +
+                "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault,
+                "$100", "dummy type", "dummy category", attachmentIds);
         nextAvailableId++;
         listingCache.put(listing.getId(), listing);
     }

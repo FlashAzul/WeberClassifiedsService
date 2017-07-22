@@ -26,9 +26,8 @@ import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
 /**
  * Created by Bryan Fritz on 7/15/2017.
  */
-
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping(LISTING_RESOURCE)
 public class ListingResource {
 
@@ -49,9 +48,7 @@ public class ListingResource {
                 return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " +
-                        "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not " +
-                        "exist.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not " + "exist.");
             }
         }
         else {
@@ -61,16 +58,16 @@ public class ListingResource {
 
     /*Validate the token*/
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity updateListing (@RequestBody ListingRepresentation listing, @PathVariable(ID) Long id,
-            @RequestHeader(AUTH_TOKEN_HEADER) String token) {
+    public ResponseEntity updateListing (@RequestBody ListingRepresentation listingRepresentation, @RequestHeader
+            (AUTH_TOKEN_HEADER) String token) {
 
         if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
                 userRepository)) {
-            Listing returnListing = listingRepository.read(id);
-            if (returnListing != null) {
-                returnListing.setMessage(listing.getMessage());
-                ListingRepresentation listingRepresentation = ListingUtils.buildListingRepresentation(returnListing);
-                return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
+            Listing listing = ListingUtils.buildListing(listingRepresentation, listingRepository, userRepository);
+            if (listing.getId() != null) {
+                listingRepository.update(listing);
+                return ResponseEntity.status(HttpStatus.OK).body(ListingUtils.buildListingRepresentation
+                        (listingRepository.read(listing.getId())));
             }
             else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This listing does not exist");
