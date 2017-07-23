@@ -28,4 +28,4 @@ build/
 src/main/resources/
 src/test/java/
 src/test/resources/
-/.idea/
+src/test/
