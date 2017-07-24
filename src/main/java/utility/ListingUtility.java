@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Inca1 on 7/16/2017.
  */
-public class ListingUtils {
+public class ListingUtility {
 
     public static Listing buildListing (ListingRepresentation listingRepresentation, ListingRepository
             listingRepository, UserRepository userRepository) {
@@ -27,29 +27,27 @@ public class ListingUtils {
             listing.setId(listingRepresentation.getId());
         }
 
-        listing.setAttachmentIds(listingRepresentation.getAttachmentIds());
         listing.setMessage(listingRepresentation.getMessage());
         listing.setPrice(listingRepresentation.getPrice());
         listing.setTitle(listingRepresentation.getTitle());
         listing.setCategory(listingRepresentation.getCategory());
         listing.setType(listingRepresentation.getType());
-        listing.setUser(userRepository.read(listingRepresentation.getUserRepresentation().getId()));
+        listing.setUser(userRepository.read(listingRepresentation.getUser().getId()));
         return listing;
     }
 
     public static ListingRepresentation buildListingRepresentation (Listing listing) {
         ListingRepresentation listingRepresentation = new ListingRepresentation();
         listingRepresentation.setId(listing.getId());
-        UserRepresentation userRepresentation = UserUtils.buildUserRepresentation(listing.getUser());
+        UserRepresentation userRepresentation = UserUtility.buildUserRepresentation(listing.getUser());
         userRepresentation.setPassword("");
         userRepresentation.setAccessLevel(null);
-        listingRepresentation.setUserRepresentation(userRepresentation);
+        listingRepresentation.setUser(userRepresentation);
         listingRepresentation.setMessage(listing.getMessage());
         listingRepresentation.setTitle(listing.getTitle());
         listingRepresentation.setPrice(listing.getPrice());
         listingRepresentation.setCategory(listing.getCategory());
         listingRepresentation.setType(listing.getType());
-        listingRepresentation.setAttachmentIds(listing.getAttachmentIds());
         return listingRepresentation;
     }
 
@@ -64,19 +62,18 @@ public class ListingUtils {
     public static ListingSummaryRepresentation buildListingSummaryRepresentation (Listing listing) {
         ListingSummaryRepresentation listingSummaryRepresentation = new ListingSummaryRepresentation();
         listingSummaryRepresentation.setId(listing.getId());
-        UserRepresentation userRepresentation = UserUtils.buildUserRepresentation(listing.getUser());
+        UserRepresentation userRepresentation = UserUtility.buildUserRepresentation(listing.getUser());
         userRepresentation.setPassword("");
         userRepresentation.setAccessLevel(null);
-        listingSummaryRepresentation.setUserRepresentation(userRepresentation);
+        listingSummaryRepresentation.setUser(userRepresentation);
         listingSummaryRepresentation.setPrice(listing.getPrice());
         listingSummaryRepresentation.setTitle(listing.getTitle());
-        listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, ApplicationConstants
-                .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH));
+        Integer summaryMessageLength = listing.getMessage().length() > ApplicationConstants
+                .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH ? listing.getMessage().length() - ApplicationConstants
+                .LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH : listing.getMessage().length();
+        listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, summaryMessageLength));
         listingSummaryRepresentation.setCategory(listing.getCategory());
         listingSummaryRepresentation.setType(listing.getType());
-        if (listing.getAttachmentIds() != null && listing.getAttachmentIds().size() > 0) {
-            listingSummaryRepresentation.setAttachmentId(listing.getAttachmentIds().get(0));
-        }
         return listingSummaryRepresentation;
     }
 

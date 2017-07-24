@@ -31,7 +31,7 @@ public class ApplicationConstants {
     public static final String USER_RESOURCE = USERS_RESOURCE + SLASH + ID_PATH_VARIABLE;
     public static final String LISTINGS_RESOURCE = SERVICE_NAME + SLASH + "listings";
     public static final String LISTING_RESOURCE = LISTINGS_RESOURCE + SLASH + ID_PATH_VARIABLE;
-    public static final Integer LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH = 50;
+    public static final Integer LISTING_MESSAGE_SUMMARY_DEFAULT_LENGTH = 250;
     public static final String PING_RESOURCE = SERVICE_NAME + SLASH + "ping";
 
     // Authentication
@@ -43,7 +43,7 @@ public class ApplicationConstants {
     public static final String TOKEN_TYPE_REFRESH = "refresh";
     public static final String USER_NAME_CLAIM = "userName";
     public static final String ACCESS_LEVEL_CLAIM = "accessLevel";
-    public static final int TOKEN_EXPIRATION_MINUTES = 30;
+    public static final int TOKEN_EXPIRATION_MINUTES = 2400;
     public static final int REFRESH_TOKEN_EXPIRATION_MINUTES = TOKEN_EXPIRATION_MINUTES + 10;
 
     /**

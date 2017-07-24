@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
-import utility.AuthorizationUtils;
-import utility.ListingUtils;
+import utility.AuthorizationUtility;
+import utility.ListingUtility;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,33 +44,54 @@ public class ListingsResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getListingsSummary (@RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            List<Listing> listings = listingRepository.read();
-            if (listings == null) {
-                listings = new ArrayList<>();
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                List<Listing> listings = listingRepository.read();
+                if (listings == null) {
+                    listings = new ArrayList<>();
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(ListingUtility.buildListingSummaryRepresentation
+                        (listings));
             }
-            return ResponseEntity.status(HttpStatus.OK).body(ListingUtils.buildListingSummaryRepresentation(listings));
+            else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
+            }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createListing (@RequestBody ListingRepresentation postedListingRepresentation,
             @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            Listing newListing = ListingUtils.buildListing(postedListingRepresentation, listingRepository,
-                    userRepository);
-            listingRepository.create(newListing);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(ListingUtils.buildListingRepresentation
-                    (listingRepository.read(newListing.getId())));
+        try {
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                Listing newListing = ListingUtility.buildListing(postedListingRepresentation, listingRepository,
+                        userRepository);
+                listingRepository.create(newListing);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(ListingUtility.buildListingRepresentation
+                        (listingRepository.read(newListing.getId())));
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
+            }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
 
     }

@@ -14,17 +14,15 @@ public class ListingSummaryRepresentation {
     private String messageSummary;
     private String price;
     private String type;
-    private UserRepresentation userRepresentation;
+    private UserRepresentation user;
     private String category;
-    private Long attachmentId;
 
-    public ListingSummaryRepresentation (Long id, String title, String messageSummary, UserRepresentation
-            userRepresentation, Long attachmentId, String type, String category, String price) {
+    public ListingSummaryRepresentation (Long id, String title, String messageSummary, UserRepresentation user,
+            String type, String category, String price) {
         this.id = id;
         this.title = title;
         this.messageSummary = messageSummary;
-        this.userRepresentation = userRepresentation;
-        this.attachmentId = attachmentId;
+        this.user = user;
         this.price = price;
         this.type = type;
         this.category = category;
@@ -33,12 +31,12 @@ public class ListingSummaryRepresentation {
     public ListingSummaryRepresentation () {
     }
 
-    public UserRepresentation getUserRepresentation () {
-        return userRepresentation;
+    public UserRepresentation getUser () {
+        return user;
     }
 
-    public void setUserRepresentation (UserRepresentation userRepresentation) {
-        this.userRepresentation = userRepresentation;
+    public void setUser (UserRepresentation user) {
+        this.user = user;
     }
 
     public String getType () {
@@ -71,14 +69,6 @@ public class ListingSummaryRepresentation {
 
     public void setPrice (String price) {
         this.price = price;
-    }
-
-    public void setAttachmentId (Long attachmentId) {
-        this.attachmentId = attachmentId;
-    }
-
-    public Long getAttachmentId () {
-        return attachmentId;
     }
 
     public String getTitle () {

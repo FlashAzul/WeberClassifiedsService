@@ -30,7 +30,7 @@ import static application.ApplicationConstants.USER_NAME_CLAIM;
  * Created by samuel on 7/11/17.
  * Group of helper methods used with Authentication
  */
-public class AuthenticationUtils {
+public class AuthenticationUtility {
     private static final int ITERATIONS = 10;
     private static final int KEY_LENGTH = 10;
 
@@ -40,6 +40,14 @@ public class AuthenticationUtils {
             return null;
         }
         return authInfo[0];
+    }
+
+    public static String getUserPasswordFromHeader (String authHeader) {
+        String[] authInfo = getAuthInfoFromHeader(authHeader);
+        if (authInfo == null || authInfo.length != 2) {
+            return null;
+        }
+        return authInfo[1];
     }
 
     private static String[] getAuthInfoFromHeader (String authHeader) {
@@ -56,14 +64,6 @@ public class AuthenticationUtils {
         catch (UnsupportedEncodingException e) {
             return null;
         }
-    }
-
-    public static String getUserPasswordFromHeader (String authHeader) {
-        String[] authInfo = getAuthInfoFromHeader(authHeader);
-        if (authInfo == null || authInfo.length != 2) {
-            return null;
-        }
-        return authInfo[1];
     }
 
     public static AuthenticationRepresentation buildAuthenticationRepresentation (UserRepresentation user) {

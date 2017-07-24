@@ -16,7 +16,7 @@ import static application.ApplicationConstants.USER_NAME_CLAIM;
  * Created by samuel on 7/6/17.
  * Group of helper methods used with Authorization
  */
-public class AuthorizationUtils {
+public class AuthorizationUtility {
 
     public static Boolean validateUserAuthorization (String token, ApplicationConstants.AccessLevel
             minimumAccessLevelRequired, String tokenType, UserRepository userRepository) {
@@ -37,7 +37,7 @@ public class AuthorizationUtils {
         Jws<Claims> claimsJws = getClaimsFromToken(token);
         String userName = getClaimFromClaims(claimsJws, USER_NAME_CLAIM);
         User user = userRepository.getByUserName(userName);
-        return AuthenticationUtils.buildAuthenticationRepresentation(UserUtils.buildUserRepresentation(user));
+        return AuthenticationUtility.buildAuthenticationRepresentation(UserUtility.buildUserRepresentation(user));
 
     }
 

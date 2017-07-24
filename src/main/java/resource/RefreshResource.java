@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import repository.UserRepository;
-import utility.AuthorizationUtils;
+import utility.AuthorizationUtility;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
 import static application.ApplicationConstants.REFRESH_RESOURCE;
@@ -29,13 +32,25 @@ public class RefreshResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity refreshAuthentication (@RequestHeader(AUTH_TOKEN_HEADER) String token) {
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_REFRESH, userRepository)) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthorizationUtils.refreshAuthentication(token,
-                    userRepository));
+
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_REFRESH, userRepository)) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthorizationUtility.refreshAuthentication
+                        (token, userRepository));
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
+            }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 }

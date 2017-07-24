@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 /**
  * Created by Bryan Fritz on 7/15/2017.
  */
@@ -14,10 +12,8 @@ public class Listing {
     private String price;
     private String type;
     private String category;
-    private List<Long> attachmentIds;
 
-    public Listing (Long id, String title, String message, User user, String type, String category, String price,
-            List<Long> attachmentIds) {
+    public Listing (Long id, String title, String message, User user, String type, String category, String price) {
         this.id = id;
         this.title = title;
         this.message = message;
@@ -25,7 +21,6 @@ public class Listing {
         this.type = type;
         this.category = category;
         this.price = price;
-        this.attachmentIds = attachmentIds;
     }
 
     public Listing () {
@@ -53,14 +48,6 @@ public class Listing {
 
     public void setPrice (String price) {
         this.price = price;
-    }
-
-    public List<Long> getAttachmentIds () {
-        return attachmentIds;
-    }
-
-    public void setAttachmentIds (List<Long> attachmentIds) {
-        this.attachmentIds = attachmentIds;
     }
 
     public Long getId () {

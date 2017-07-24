@@ -13,7 +13,7 @@ import java.util.List;
  * Created by samuel on 7/6/17.
  * Group of helper methods used with Users
  */
-public class UserUtils {
+public class UserUtility {
 
     public static List<UserRepresentation> buildUserRepresentation (List<User> userModels) {
         List<UserRepresentation> userRepresentations = new ArrayList<>();
@@ -52,7 +52,7 @@ public class UserUtils {
             random.nextBytes(bytes);
             String salt = new String(bytes);
             userModel.setSalt(salt);
-            userModel.setHashedPassword(AuthenticationUtils.hashPassword(userRepresentation.getPassword(), salt));
+            userModel.setHashedPassword(AuthenticationUtility.hashPassword(userRepresentation.getPassword(), salt));
         }
         userModel.setAccessLevel(userRepresentation.getAccessLevel());
         userModel.setAddress(userRepresentation.getAddress());

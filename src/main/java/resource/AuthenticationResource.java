@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import repository.UserRepository;
-import utility.AuthenticationUtils;
-import utility.UserUtils;
+import utility.AuthenticationUtility;
+import utility.UserUtility;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTHENTICATION_RESOURCE;
 import static application.ApplicationConstants.AUTHORIZATION_REQUEST_HEADER;
@@ -32,19 +35,31 @@ public class AuthenticationResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity authenticateUser (@RequestHeader(AUTHORIZATION_REQUEST_HEADER) String authHeader) {
-        String userName = AuthenticationUtils.getUserNameFromHeader(authHeader);
-        String password = AuthenticationUtils.getUserPasswordFromHeader(authHeader);
 
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserName and Password required...");
-        }
+        try {
+            String userName = AuthenticationUtility.getUserNameFromHeader(authHeader);
+            String password = AuthenticationUtility.getUserPasswordFromHeader(authHeader);
 
-        User user = userRepository.getByUserName(userName);
-        if (user != null) {
-            if (user.getHashedPassword().equals(AuthenticationUtils.hashPassword(password, user.getSalt()))) {
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtils.buildAuthenticationRepresentation(UserUtils.buildUserRepresentation(user)));
+            if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Both a Username and Password are " +
+                        "required...");
             }
+
+            User user = userRepository.getByUserName(userName);
+            if (user != null) {
+                if (user.getHashedPassword().equals(AuthenticationUtility.hashPassword(password, user.getSalt()))) {
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthenticationUtility
+                            .buildAuthenticationRepresentation(UserUtility.buildUserRepresentation(user)));
+                }
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The username/password combination was " +
+                    "rejected...");
+
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Your username and password were rejected...");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
+        }
     }
 }

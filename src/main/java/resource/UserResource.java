@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import repository.UserRepository;
 import representation.UserRepresentation;
-import utility.AuthorizationUtils;
-import utility.UserUtils;
+import utility.AuthorizationUtility;
+import utility.UserUtility;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
 import static application.ApplicationConstants.ID;
@@ -37,64 +40,99 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getUserById (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            User user = userRepository.read(userId);
-            if (user != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(user));
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                User user = userRepository.read(userId);
+                if (user != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(user));
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " +
+                            "found");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " + "found");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
             token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
+        try {
 
-            if (userRepository.getByUserName(user.getUserName()) != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
-                        + "' already exists.");
-            }
-            User updatedUserModel = UserUtils.buildUserModel(userRepository, user);
-            if (updatedUserModel.getId() != null) {
-                userRepository.update(updatedUserModel);
-                return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(userRepository.read
-                        (updatedUserModel.getId())));
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+
+                if (userRepository.getByUserName(user.getUserName()) != null) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
+                            .getUserName() + "' already exists.");
+                }
+                User updatedUserModel = UserUtility.buildUserModel(userRepository, user);
+                if (updatedUserModel.getId() != null) {
+                    userRepository.update(updatedUserModel);
+                    return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation
+                            (userRepository.read(updatedUserModel.getId())));
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + user.getId() + " not "
+                            + "found");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + user.getId() + " not " +
-                        "found");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            User user = userRepository.read(userId);
-            if (user != null) {
-                userRepository.delete(userId);
-                return ResponseEntity.status(HttpStatus.OK).body("User " + userId + " successfully deleted");
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                User user = userRepository.read(userId);
+                if (user != null) {
+                    userRepository.delete(userId);
+                    return ResponseEntity.status(HttpStatus.OK).body("User " + userId + " successfully deleted");
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " +
+                            "found");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + userId + " not " + "found");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 }

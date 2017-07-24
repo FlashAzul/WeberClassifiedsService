@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import repository.UserRepository;
 import representation.UserRepresentation;
-import utility.AuthorizationUtils;
-import utility.UserUtils;
+import utility.AuthorizationUtility;
+import utility.UserUtility;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,43 +43,64 @@ public class UsersResource {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String authToken, @RequestParam(value = USER_NAME,
             defaultValue = "") String userName) {
-        List<User> users = new ArrayList<>();
 
-        if (AuthorizationUtils.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            if (StringUtils.isNotEmpty(userName)) {
-                User user = userRepository.getByUserName(userName);
-                if (user != null) {
-                    users.add(user);
+        try {
+
+            List<User> users = new ArrayList<>();
+
+            if (AuthorizationUtility.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                if (StringUtils.isNotEmpty(userName)) {
+                    User user = userRepository.getByUserName(userName);
+                    if (user != null) {
+                        users.add(user);
+                    }
                 }
+                else {
+                    users.addAll(userRepository.read());
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(users));
             }
             else {
-                users.addAll(userRepository.read());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(users));
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
             token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                TOKEN_TYPE_AUTH, userRepository)) {
-            if (userRepository.getByUserName(user.getUserName()) != null) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
-                        + "' already exists.");
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
+                    TOKEN_TYPE_AUTH, userRepository)) {
+                if (userRepository.getByUserName(user.getUserName()) != null) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
+                            .getUserName() + "' already exists.");
+                }
+                User newUser = UserUtility.buildUserModel(userRepository, user);
+                userRepository.create(newUser);
+                return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository
+                        .getByUserName(user.getUserName())));
             }
-            User newUser = UserUtils.buildUserModel(userRepository, user);
-            userRepository.create(newUser);
-            return ResponseEntity.status(HttpStatus.OK).body(UserUtils.buildUserRepresentation(userRepository
-                    .getByUserName(user.getUserName())));
+            else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
+            }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
+
     }
 }

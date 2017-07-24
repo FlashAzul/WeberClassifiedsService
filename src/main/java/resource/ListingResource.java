@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
-import utility.AuthorizationUtils;
-import utility.ListingUtils;
+import utility.AuthorizationUtility;
+import utility.ListingUtility;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
 import static application.ApplicationConstants.AccessLevel;
@@ -40,42 +43,62 @@ public class ListingResource {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getListing (@PathVariable(ID) Long id, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                userRepository)) {
-            Listing returnListing = listingRepository.read(id);
-            if (returnListing != null) {
-                ListingRepresentation listingRepresentation = ListingUtils.buildListingRepresentation(returnListing);
-                return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
+                    userRepository)) {
+                Listing returnListing = listingRepository.read(id);
+                if (returnListing != null) {
+                    ListingRepresentation listingRepresentation = ListingUtility.buildListingRepresentation
+                            (returnListing);
+                    return ResponseEntity.status(HttpStatus.OK).body(listingRepresentation);
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id '" + id +
+                            "' " + "does not exist.");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested listing with id: '" + id + "' " + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "does" + " " + "not " + "exist.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
+
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
     }
 
-    /*Validate the token*/
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateListing (@RequestBody ListingRepresentation listingRepresentation, @RequestHeader
             (AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                userRepository)) {
-            Listing listing = ListingUtils.buildListing(listingRepresentation, listingRepository, userRepository);
-            if (listing.getId() != null) {
-                listingRepository.update(listing);
-                return ResponseEntity.status(HttpStatus.OK).body(ListingUtils.buildListingRepresentation
-                        (listingRepository.read(listing.getId())));
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
+                    userRepository)) {
+                Listing listing = ListingUtility.buildListing(listingRepresentation, listingRepository, userRepository);
+                if (listing.getId() != null) {
+                    listingRepository.update(listing);
+                    return ResponseEntity.status(HttpStatus.OK).body(ListingUtility.buildListingRepresentation
+                            (listingRepository.read(listing.getId())));
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This listing does not exist");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This listing does not exist");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
 
         }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
         }
 
     }
@@ -83,20 +106,30 @@ public class ListingResource {
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteListing (@PathVariable(ID) Long id, @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
-        if (AuthorizationUtils.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                userRepository)) {
-            Listing returnListing = listingRepository.read(id);
-            if (returnListing != null) {
-                listingRepository.delete(returnListing.getId());
-                return ResponseEntity.status(HttpStatus.OK).body("Listing " + id + " successfully deleted");
+        try {
+
+            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
+                    userRepository)) {
+                Listing returnListing = listingRepository.read(id);
+                if (returnListing != null) {
+                    listingRepository.delete(returnListing.getId());
+                    return ResponseEntity.status(HttpStatus.OK).body("Listing " + id + " successfully deleted");
+                }
+                else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Listing" + id + " does not exist");
+                }
             }
             else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Listing" + id + " does not exist");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
+                        "Action");
             }
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested Action");
-        }
-    }
 
+        }
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sw.toString());
+        }
+
+    }
 }
