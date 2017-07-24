@@ -13,10 +13,13 @@ public class ToDo {
     // Todo: Add required field validation around the resources
 
     // Refactoring:
-    // Todo: Go Over Each Resource And Fix All Problems
+    // Todo: Do a passover on User resource.
+    // Todo: Do a passover on authorization and how it works.
     // Todo: Remove instances of null in the representation layer.
     // Todo: Add AuthorizationRequired annotation so duplicated authorization code can be removed.
     // Todo: Change user salt when they change their password.
     // Todo: Standardize Error Messages
+    // Todo: Do some major clean up of exception handling, crappy code thrown together, etc... Basically once
+    // Todo: everything is working go back and do it again but better now that you have more time :D.
 
 }

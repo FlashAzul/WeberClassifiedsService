@@ -76,15 +76,15 @@ public class UserResource {
             if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
                     TOKEN_TYPE_AUTH, userRepository)) {
 
-                if (userRepository.getByUserName(user.getUserName()) != null) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
-                            .getUserName() + "' already exists.");
-                }
-                User updatedUserModel = UserUtility.buildUserModel(userRepository, user);
-                if (updatedUserModel.getId() != null) {
-                    userRepository.update(updatedUserModel);
-                    return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation
-                            (userRepository.read(updatedUserModel.getId())));
+                User userToUpdate = UserUtility.buildUserModel(userRepository, user);
+                if (userToUpdate.getId() != null) {
+                    if (!user.getUserName().equals(userToUpdate.getUserName()) && userRepository.getByUserName(user
+                            .getUserName()) != null) {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
+                                .getUserName() + "' already exists.");
+                    }
+                    userRepository.update(userToUpdate);
+                    return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository.read(userToUpdate.getId())));
                 }
                 else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with Id: " + user.getId() + " not "

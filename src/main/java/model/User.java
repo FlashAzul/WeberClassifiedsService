@@ -21,10 +21,11 @@ public class User {
     private String salt;
     private ApplicationConstants.AccessLevel accessLevel;
 
-    public User (String userName, String wNumber, String email, String firstName, String lastName, Address address,
-            String hashedPassword, String salt, ApplicationConstants.AccessLevel accessLevel) {
+    public User (String userName, String wNumber, String phone, String email, String firstName, String lastName,
+            Address address, String hashedPassword, String salt, ApplicationConstants.AccessLevel accessLevel) {
         this.userName = userName;
         this.wNumber = wNumber;
+        this.phone = phone;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
