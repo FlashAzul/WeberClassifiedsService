@@ -2,6 +2,7 @@ package utility;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import model.User;
 import org.apache.commons.lang3.StringUtils;
 import representation.AuthenticationRepresentation;
 import representation.UserRepresentation;
@@ -94,5 +95,9 @@ public class AuthenticationUtility {
         catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static AuthenticationRepresentation refreshAuthentication (User user) {
+        return buildAuthenticationRepresentation(UserUtility.buildUserRepresentation(user));
     }
 }

@@ -21,6 +21,9 @@ public class ApplicationConstants {
     public static final String AUTH_TOKEN_HEADER = "AuthToken";
     public static final String AUTHORIZATION_REQUEST_HEADER = "Authorization";
 
+    // Request Attributes
+    public static final String TOKEN_USER_ATTRIBUTE = "TokenUser";
+
     // Base Url For Service
     private static final String SERVICE_NAME = SLASH + "weberclassifieds";
 
