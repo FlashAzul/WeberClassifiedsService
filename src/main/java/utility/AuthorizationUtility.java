@@ -18,19 +18,37 @@ import static application.ApplicationConstants.USER_NAME_CLAIM;
  */
 public class AuthorizationUtility {
 
-    public static Boolean validateUserAuthorization (String token, ApplicationConstants.AccessLevel
-            minimumAccessLevelRequired, String tokenType, UserRepository userRepository) {
+    public static Boolean validateAuthorization (String token, String tokenTypeRequired, Long userBeingAccessedId,
+            UserRepository userRepository) {
         try {
             Jws<Claims> claimsJws = getClaimsFromToken(token);
             String userName = getClaimFromClaims(claimsJws, USER_NAME_CLAIM);
             String authType = getClaimFromClaims(claimsJws, TOKEN_TYPE);
-            User user = userRepository.getByUserName(userName);
-            return (user != null && user.getAccessLevel().ordinal() <= minimumAccessLevelRequired.ordinal() &&
-                    authType.equals(tokenType));
+            User tokenUser = userRepository.getByUserName(userName);
+            if (tokenUser != null && authType.equals(tokenTypeRequired)) {
+                if (userBeingAccessedId != null) {
+                    User userBeingAccessed = userRepository.read(userBeingAccessedId);
+                    return validateUserAuthorization(tokenUser, userBeingAccessed);
+                }
+                return true;
+            }
+            return false;
         }
         catch (Exception e) {
             return false;
         }
+
+    }
+
+    public static User getUserFromToken (String token, UserRepository userRepository) {
+        Jws<Claims> claimsJws = getClaimsFromToken(token);
+        String userName = getClaimFromClaims(claimsJws, USER_NAME_CLAIM);
+        return userRepository.getByUserName(userName);
+    }
+
+    private static Boolean validateUserAuthorization (User tokenUser, User userBeingAccessed) {
+        return tokenUser.getId().equals(userBeingAccessed.getId()) || tokenUser.getAccessLevel().equals
+                (ApplicationConstants.AccessLevel.ADMIN);
     }
 
     public static AuthenticationRepresentation refreshAuthentication (String token, UserRepository userRepository) {

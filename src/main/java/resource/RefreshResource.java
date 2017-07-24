@@ -1,6 +1,5 @@
 package resource;
 
-import application.ApplicationConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,7 @@ public class RefreshResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_REFRESH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_REFRESH, null, userRepository)) {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(AuthorizationUtility.refreshAuthentication
                         (token, userRepository));
             }

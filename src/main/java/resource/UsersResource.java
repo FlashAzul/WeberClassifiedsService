@@ -41,23 +41,27 @@ public class UsersResource {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String authToken, @RequestParam(value = USER_NAME,
+    public ResponseEntity getUsers (@RequestHeader(AUTH_TOKEN_HEADER) String token, @RequestParam(value = USER_NAME,
             defaultValue = "") String userName) {
 
         try {
 
             List<User> users = new ArrayList<>();
 
-            if (AuthorizationUtility.validateUserAuthorization(authToken, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
-                if (StringUtils.isNotEmpty(userName)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, null, userRepository)) {
+                User tokenUser = AuthorizationUtility.getUserFromToken(token, userRepository);
+                if (StringUtils.isNotEmpty(userName) && (tokenUser.getUserName().equals(userName) || tokenUser
+                        .getAccessLevel().equals(ApplicationConstants.AccessLevel.ADMIN))) {
                     User user = userRepository.getByUserName(userName);
                     if (user != null) {
                         users.add(user);
                     }
                 }
-                else {
+                else if (tokenUser.getAccessLevel().equals(ApplicationConstants.AccessLevel.ADMIN)) {
                     users.addAll(userRepository.read());
+                }
+                else {
+                    users.add(userRepository.read(tokenUser.getId()));
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(users));
             }
@@ -76,26 +80,17 @@ public class UsersResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser (@RequestBody UserRepresentation user, @RequestHeader(AUTH_TOKEN_HEADER) String
-            token) {
+    public ResponseEntity createUser (@RequestBody UserRepresentation user) {
 
         try {
-
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
-                if (userRepository.getByUserName(user.getUserName()) != null) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
-                            .getUserName() + "' already exists.");
-                }
-                User newUser = UserUtility.buildUserModel(userRepository, user);
-                userRepository.create(newUser);
-                return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository
-                        .getByUserName(user.getUserName())));
+            if (userRepository.getByUserName(user.getUserName()) != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
+                        + "' already exists.");
             }
-            else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
-                        "Action");
-            }
+            User newUser = UserUtility.buildUserModel(userRepository, user);
+            userRepository.create(newUser);
+            return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository
+                    .getByUserName(user.getUserName())));
 
         }
         catch (Exception e) {

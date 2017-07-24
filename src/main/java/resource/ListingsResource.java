@@ -1,6 +1,5 @@
 package resource;
 
-import application.ApplicationConstants;
 import model.Listing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,8 +45,7 @@ public class ListingsResource {
     public ResponseEntity getListingsSummary (@RequestHeader(AUTH_TOKEN_HEADER) String token) {
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, null, userRepository)) {
                 List<Listing> listings = listingRepository.read();
                 if (listings == null) {
                     listings = new ArrayList<>();
@@ -74,8 +72,8 @@ public class ListingsResource {
             @RequestHeader(AUTH_TOKEN_HEADER) String token) {
 
         try {
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, postedListingRepresentation
+                    .getUser().getId(), userRepository)) {
                 Listing newListing = ListingUtility.buildListing(postedListingRepresentation, listingRepository,
                         userRepository);
                 listingRepository.create(newListing);

@@ -21,7 +21,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
-import static application.ApplicationConstants.AccessLevel;
 import static application.ApplicationConstants.ID;
 import static application.ApplicationConstants.LISTING_RESOURCE;
 import static application.ApplicationConstants.TOKEN_TYPE_AUTH;
@@ -45,8 +44,7 @@ public class ListingResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                    userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, null, userRepository)) {
                 Listing returnListing = listingRepository.read(id);
                 if (returnListing != null) {
                     ListingRepresentation listingRepresentation = ListingUtility.buildListingRepresentation
@@ -77,8 +75,8 @@ public class ListingResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                    userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, listingRepresentation.getUser()
+                    .getId(), userRepository)) {
                 Listing listing = ListingUtility.buildListing(listingRepresentation, listingRepository, userRepository);
                 if (listing.getId() != null) {
                     listingRepository.update(listing);
@@ -108,20 +106,23 @@ public class ListingResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, AccessLevel.STANDARD, TOKEN_TYPE_AUTH,
-                    userRepository)) {
-                Listing returnListing = listingRepository.read(id);
-                if (returnListing != null) {
-                    listingRepository.delete(returnListing.getId());
+            Listing listingToDelete = listingRepository.read(id);
+            if (listingToDelete != null) {
+                if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, listingToDelete.getUser()
+                        .getId(), userRepository)) {
+
+                    listingRepository.delete(listingToDelete.getId());
                     return ResponseEntity.status(HttpStatus.OK).body("Listing " + id + " successfully deleted");
+
                 }
                 else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Listing" + id + " does not exist");
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not authorized to perform requested" +
+                            " " + "action");
                 }
+
             }
             else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
-                        "Action");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Listing" + id + " does not exist");
             }
 
         }

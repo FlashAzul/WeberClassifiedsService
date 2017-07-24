@@ -1,6 +1,5 @@
 package resource;
 
-import application.ApplicationConstants;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +41,7 @@ public class UserResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, userId, userRepository)) {
                 User user = userRepository.read(userId);
                 if (user != null) {
                     return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(user));
@@ -73,8 +71,7 @@ public class UserResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, user.getId(), userRepository)) {
 
                 User userToUpdate = UserUtility.buildUserModel(userRepository, user);
                 if (userToUpdate.getId() != null) {
@@ -110,8 +107,7 @@ public class UserResource {
 
         try {
 
-            if (AuthorizationUtility.validateUserAuthorization(token, ApplicationConstants.AccessLevel.STANDARD,
-                    TOKEN_TYPE_AUTH, userRepository)) {
+            if (AuthorizationUtility.validateAuthorization(token, TOKEN_TYPE_AUTH, userId, userRepository)) {
                 User user = userRepository.read(userId);
                 if (user != null) {
                     userRepository.delete(userId);
