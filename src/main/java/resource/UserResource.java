@@ -83,6 +83,9 @@ public class UserResource {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user
                             .getUserName() + "' already exists.");
                 }
+                if (tokenUser.getAccessLevel() != ApplicationConstants.AccessLevel.ADMIN) {
+                    userToUpdate.setAccessLevel(ApplicationConstants.AccessLevel.STANDARD);
+                }
                 userRepository.update(userToUpdate);
                 return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository
                         .read(userToUpdate.getId())));
@@ -102,8 +105,6 @@ public class UserResource {
     @AuthorizationRequired
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteUser (@PathVariable(ID) Long userId, @RequestAttribute(TOKEN_USER_ATTRIBUTE) User tokenUser) {
-
-
 
         try {
             User userToDelete = userRepository.read(userId);

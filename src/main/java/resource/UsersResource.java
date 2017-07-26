@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,8 @@ import java.util.List;
 
 import static application.ApplicationConstants.TOKEN_USER_ATTRIBUTE;
 import static application.ApplicationConstants.USERS_RESOURCE;
+import static application.ApplicationConstants.USER_CREATION_TOKEN;
+import static application.ApplicationConstants.USER_CREATION_TOKEN_HEADER;
 import static application.ApplicationConstants.USER_NAME;
 
 /**
@@ -72,14 +75,22 @@ public class UsersResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser (@RequestBody UserRepresentation user) {
+    public ResponseEntity createUser (@RequestBody UserRepresentation user, @RequestHeader
+            (USER_CREATION_TOKEN_HEADER) String userCreationToken) {
 
         try {
+            if (!userCreationToken.equals(USER_CREATION_TOKEN)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized To Perform Requested " +
+                        "Action");
+            }
             if (userRepository.getByUserName(user.getUserName()) != null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("A user with username '" + user.getUserName()
                         + "' already exists.");
             }
             User newUser = UserUtility.buildUserModel(userRepository, user);
+            // A user can only be initially created as a standard user. An admin later on can update a user to have
+            // admin permissions
+            newUser.setAccessLevel(ApplicationConstants.AccessLevel.STANDARD);
             userRepository.create(newUser);
             return ResponseEntity.status(HttpStatus.OK).body(UserUtility.buildUserRepresentation(userRepository
                     .getByUserName(user.getUserName())));

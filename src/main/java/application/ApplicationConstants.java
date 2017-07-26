@@ -20,6 +20,7 @@ public class ApplicationConstants {
     // Headers
     public static final String AUTH_TOKEN_HEADER = "AuthToken";
     public static final String AUTHORIZATION_REQUEST_HEADER = "Authorization";
+    public static final String USER_CREATION_TOKEN_HEADER = "UserCreateToken";
 
     // Request Attributes
     public static final String TOKEN_USER_ATTRIBUTE = "TokenUser";
@@ -39,6 +40,7 @@ public class ApplicationConstants {
 
     // Authentication
     public static final String TOKEN_SIGNATURE_KEY = "X317OlbkDHJd9fQadZgRXC7dZtsRIqCKB&y#0sRjqK6uuS1QXF";
+    public static final String USER_CREATION_TOKEN = "3D!@Aa@Ltvz^XdC0t5vp9F$qd@dn@V#ExVu#soxY%fp08D1eCC";
     public static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA512";
     public static final String TOKEN_ISSUER = "Weber Classifieds Service";
     public static final String TOKEN_TYPE = "tokenType";
@@ -53,6 +55,6 @@ public class ApplicationConstants {
      * Created by samuel on 7/14/17.
      */
     public enum AccessLevel {
-        ADMIN, STANDARD, DISABLED
+        ADMIN, STANDARD, USERCREATE, DISABLED
     }
 }
