@@ -66,7 +66,7 @@ public class ListingsResource {
             @RequestAttribute(TOKEN_USER_ATTRIBUTE) User tokenUser) {
 
         try {
-            if (!tokenUser.getId().equals(postedListingRepresentation.getUser().getId()) || !tokenUser.getAccessLevel
+            if (!tokenUser.getId().equals(postedListingRepresentation.getUser().getId()) && !tokenUser.getAccessLevel
                     ().equals(ApplicationConstants.AccessLevel.ADMIN)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User Unauthorized To Perform Requested " +
                         "Action");

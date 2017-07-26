@@ -17,17 +17,6 @@ public class ListingSummaryRepresentation {
     private UserRepresentation user;
     private String category;
 
-    public ListingSummaryRepresentation (Long id, String title, String messageSummary, UserRepresentation user,
-            String type, String category, String price) {
-        this.id = id;
-        this.title = title;
-        this.messageSummary = messageSummary;
-        this.user = user;
-        this.price = price;
-        this.type = type;
-        this.category = category;
-    }
-
     public ListingSummaryRepresentation () {
     }
 

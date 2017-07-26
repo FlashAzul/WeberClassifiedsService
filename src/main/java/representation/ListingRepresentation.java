@@ -2,7 +2,6 @@ package representation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
 
 /**
  * Created by Bryan Fritz on 7/15/17.
@@ -18,17 +17,6 @@ public class ListingRepresentation {
     private String price;
     private String type;
     private String category;
-
-    public ListingRepresentation (Long id, String title, String message, UserRepresentation user,
-            List<Long> attachmentIds,
-            String type, String category) {
-        this.id = id;
-        this.title = title;
-        this.message = message;
-        this.user = user;
-        this.type = type;
-        this.category = category;
-    }
 
     public ListingRepresentation () {
     }
