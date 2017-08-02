@@ -11,6 +11,5 @@
 .idea/uiDesigner.xml
 .idea/workspace.xml
 build/
-src/main/resources/
 src/test/java/
 src/test/resources/
