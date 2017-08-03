@@ -7,12 +7,7 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
@@ -44,11 +39,25 @@ public class ListingsResource {
 
     @AuthorizationRequired
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getListingsSummary () {
+    public ResponseEntity getListingsSummary (@RequestParam (value = "price", defaultValue = "") String price, @RequestParam (value = "type", defaultValue = "") String type,
+                                               @RequestParam (value = "category", defaultValue = "") String category, @RequestParam (value = "keyWord", defaultValue = "") String keyWord) {
         try {
             List<Listing> listings = listingRepository.read();
+
             if (listings == null) {
                 listings = new ArrayList<>();
+            }
+            if(!price.isEmpty()){
+                listings = listingRepository.byPrice(price, listings);
+            }
+            if(!type.isEmpty()){
+                listings = listingRepository.byType(type, listings);
+            }
+            if(!category.isEmpty()){
+                listings = listingRepository.byCategory(category, listings);
+            }
+            if(!keyWord.isEmpty()){
+                listings = listingRepository.byKeyword(keyWord, listings);
             }
             return ResponseEntity.status(HttpStatus.OK).body(ListingUtility.buildListingSummaryRepresentation
                     (listings));
