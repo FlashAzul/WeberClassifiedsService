@@ -39,16 +39,18 @@ public class ListingsResource {
 
     @AuthorizationRequired
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getListingsSummary (@RequestParam (value = "price", defaultValue = "") String price, @RequestParam (value = "type", defaultValue = "") String type,
-                                               @RequestParam (value = "category", defaultValue = "") String category, @RequestParam (value = "keyWord", defaultValue = "") String keyWord) {
+    public ResponseEntity getListingsSummary (@RequestParam (value = "minPrice", defaultValue = "") String minPrice, @RequestParam (value = "maxPrice", defaultValue = "") String maxPrice,
+                                              @RequestParam (value = "type", defaultValue = "") String type, @RequestParam (value = "category", defaultValue = "") String category,
+                                              @RequestParam (value = "keyWord", defaultValue = "") String keyWord, @RequestParam (value = "state", defaultValue = "") String state,
+                                              @RequestParam (value = "city", defaultValue = "") String city, @RequestParam (value = "searchTime", defaultValue = "") String searchTime) {
         try {
             List<Listing> listings = listingRepository.read();
 
             if (listings == null) {
                 listings = new ArrayList<>();
             }
-            if(!price.isEmpty()){
-                listings = listingRepository.byPrice(price, listings);
+            if(!minPrice.isEmpty() | !maxPrice.isEmpty()){
+                listings = listingRepository.byPrice(minPrice,maxPrice, listings);
             }
             if(!type.isEmpty()){
                 listings = listingRepository.byType(type, listings);
@@ -59,6 +61,13 @@ public class ListingsResource {
             if(!keyWord.isEmpty()){
                 listings = listingRepository.byKeyword(keyWord, listings);
             }
+            if(!state.isEmpty() || !city.isEmpty()){
+                listings = listingRepository.byCityOrState(city,state,listings);
+            }
+            if(!searchTime.isEmpty()){
+                listings = listingRepository.byDate(searchTime, listings);
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(ListingUtility.buildListingSummaryRepresentation
                     (listings));
         }

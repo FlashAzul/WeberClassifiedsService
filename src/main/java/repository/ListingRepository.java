@@ -19,7 +19,7 @@ public interface ListingRepository {
 
     void delete (Long id);
 
-    List<Listing> byPrice(String price, List<Listing> list);
+    List<Listing> byPrice(String minPrice,String maxPrice, List<Listing> list);
 
     List<Listing> byType(String type, List<Listing> list);
 
@@ -27,8 +27,8 @@ public interface ListingRepository {
 
     List<Listing> byKeyword(String keyWord, List<Listing> list);
 
+    List<Listing> byCityOrState(String city,String state, List<Listing> list);
 
-
-
+    List<Listing> byDate(String date, List<Listing> list);
 
 }

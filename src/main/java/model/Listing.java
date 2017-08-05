@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 /**
  * Created by Bryan Fritz on 7/15/2017.
  */
@@ -13,6 +15,10 @@ public class Listing {
     private String type;
     private String category;
 
+
+
+    private Date listingCreationDate;
+
     public Listing (Long id, String title, String message, User user, String type, String category, String price) {
         this.id = id;
         this.title = title;
@@ -21,6 +27,7 @@ public class Listing {
         this.type = type;
         this.category = category;
         this.price = price;
+        this.listingCreationDate = new Date();
     }
 
     public Listing () {
@@ -80,5 +87,13 @@ public class Listing {
 
     public void setUser (User user) {
         this.user = user;
+    }
+
+    public Date getListingCreationDate() {
+        return listingCreationDate;
+    }
+
+    public void setListingCreationDate(Long listingCreationDate) {
+        this.listingCreationDate.setTime(listingCreationDate);
     }
 }
