@@ -127,12 +127,7 @@ public class CacheListingRepository implements ListingRepository {
                 }
             }
         }
-//        for(Listing l : list){
-//
-//            if(Double.parseDouble(l.getPrice()) < maxPrice){
-//                temp.add(l);
-//            }
-//        }
+
         return temp;
     }
 
@@ -177,14 +172,6 @@ public class CacheListingRepository implements ListingRepository {
     @Override
     public List<Listing> byCityOrState(String i_city, String i_state, List<Listing> list) {
         List<Listing> temp = new ArrayList<>();
-//        CharSequence cityKeyWords = "";
-//        CharSequence stateKeyWords = "";
-//        if (!i_city.isEmpty()){
-//            cityKeyWords = i_city;
-//        }
-//        if (!i_state.isEmpty()){
-//            stateKeyWords = i_state;
-//        }
 
         if (!i_city.isEmpty() && !i_state.isEmpty()){
             for(Listing l : list){
