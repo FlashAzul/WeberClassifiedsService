@@ -26,7 +26,7 @@ public class ApplicationConstants {
     public static final String TOKEN_USER_ATTRIBUTE = "TokenUser";
 
     // Base Url For Service
-    private static final String SERVICE_NAME = SLASH + "weberclassifieds";
+    private static final String SERVICE_NAME = SLASH + "rest_service";
 
     // Resources
     public static final String AUTHENTICATION_RESOURCE = SERVICE_NAME + SLASH + "authentication";

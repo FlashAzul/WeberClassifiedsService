@@ -13,7 +13,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'weber-classifieds-service'
-    version =  '0.0.9'
+    version =  '0.1.0'
 }
 
 repositories {
