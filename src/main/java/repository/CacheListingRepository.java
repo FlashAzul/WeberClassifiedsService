@@ -26,7 +26,7 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault = new User("admin", "w12345", "801-435-5555", "test@mail.com", "Darth", "Vadar", adr1,
                 password, "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault.setId(nextAvailableId);
-        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "For Sale", "Announcements", "100");
+        Listing listing = new Listing(nextAvailableId, "This is my first Z listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "For Sale", "Announcements", "100");
         nextAvailableId++;
         listingCache.put(listing.getId(), listing);
 
@@ -36,7 +36,7 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault2 = new User("admin2", "w12346", "801-435-6666", "test2@mail.com", "Luke", "Skywalker", adr2,
                 password, "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault2.setId(nextAvailableId);
-        Listing listing2 = new Listing(nextAvailableId, "This is my second listing.", "I'm really happy I have the second" + "chance to list something on weber classifieds. 1mg it's so cool. I'm so thrilled.", adminDefault2, "In Search Of", "Books and Media", "10");
+        Listing listing2 = new Listing(nextAvailableId, "This is my second listing.", "I'm really happy I have the second" + "chance to list something on weber classifieds. 1mg it's so cool. I'm so thrilled Zoo.", adminDefault2, "In Search Of", "Books and Media", "10");
         //long listing2Time = (8*24*1000*60*60);
         listing2.setListingCreationDate(System.currentTimeMillis() - (long)8*24*1000*60*60);
         nextAvailableId++;
@@ -160,7 +160,7 @@ public class CacheListingRepository implements ListingRepository {
         List<Listing> temp = new ArrayList<>();
 
         for(Listing l : list){
-            if(l.getMessage().toLowerCase().equalsIgnoreCase(keyWord.toLowerCase()) || l.getTitle().toLowerCase().contains(keyWord.toLowerCase())){
+            if(l.getMessage().toLowerCase().contains(keyWord.toLowerCase()) || l.getTitle().toLowerCase().contains(keyWord.toLowerCase())){
                 temp.add(l);
             }
         }
@@ -176,21 +176,21 @@ public class CacheListingRepository implements ListingRepository {
             for(Listing l : list){
                 User thisListingUser = l.getUser();
 
-                if(thisListingUser.getAddress().getCity().equalsIgnoreCase(i_city) && thisListingUser.getAddress().getState().equalsIgnoreCase(i_state)){
+                if(thisListingUser.getAddress().getCity().toLowerCase().contains(i_city.toString().toLowerCase()) && thisListingUser.getAddress().getState().toLowerCase().contains(i_state.toLowerCase())){
                     temp.add(l);
                 }
             }
         }else if (!i_city.isEmpty()){
             for(Listing l : list){
                 User thisListingUser = l.getUser();
-                if(thisListingUser.getAddress().getCity().equalsIgnoreCase(i_city)){
+                if(thisListingUser.getAddress().getCity().toLowerCase().contains(i_city.toLowerCase())){
                     temp.add(l);
                 }
             }
         }else{
             for(Listing l : list){
                 User thisListingUser = l.getUser();
-                if(thisListingUser.getAddress().getState().equalsIgnoreCase(i_state)){
+                if(thisListingUser.getAddress().getState().toLowerCase().contains(i_state.toLowerCase())){
                     temp.add(l);
                 }
             }
