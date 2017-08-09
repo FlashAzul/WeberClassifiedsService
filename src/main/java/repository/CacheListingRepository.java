@@ -26,7 +26,7 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault = new User("admin", "w12345", "801-435-5555", "test@mail.com", "Darth", "Vadar", adr1,
                 password, "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault.setId(nextAvailableId);
-        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "dummy type", "dummy category", "100");
+        Listing listing = new Listing(nextAvailableId, "This is my first listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. Omg it's so cool. I'm so excited.", adminDefault, "For Sale", "Announcements", "100");
         nextAvailableId++;
         listingCache.put(listing.getId(), listing);
 
@@ -36,7 +36,7 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault2 = new User("admin2", "w12346", "801-435-6666", "test2@mail.com", "Luke", "Skywalker", adr2,
                 password, "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault2.setId(nextAvailableId);
-        Listing listing2 = new Listing(nextAvailableId, "This is my second listing.", "I'm really happy I have the second" + "chance to list something on weber classifieds. 1mg it's so cool. I'm so thrilled.", adminDefault2, "cool type", "cool category", "10");
+        Listing listing2 = new Listing(nextAvailableId, "This is my second listing.", "I'm really happy I have the second" + "chance to list something on weber classifieds. 1mg it's so cool. I'm so thrilled.", adminDefault2, "In Search Of", "Books and Media", "10");
         //long listing2Time = (8*24*1000*60*60);
         listing2.setListingCreationDate(System.currentTimeMillis() - (long)8*24*1000*60*60);
         nextAvailableId++;
@@ -48,7 +48,7 @@ public class CacheListingRepository implements ListingRepository {
         User adminDefault3 = new User("admin", "w12347", "801-435-7777", "test3@mail.com", "Obi", "Wan-Kenobi", adr3,
                 password, "23423423525", ApplicationConstants.AccessLevel.ADMIN);
         adminDefault3.setId(nextAvailableId);
-        Listing listing3 = new Listing(nextAvailableId, "This is my third listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. 3mg it's so cool. I'm so bored.", adminDefault3, "car", "car category", "50.25");
+        Listing listing3 = new Listing(nextAvailableId, "This is my third listing.", "I'm really happy I have the " + "chance to list something on weber classifieds. 3mg it's so cool. I'm so bored.", adminDefault3, "In Search Of", "Computers", "50.25");
         listing3.setListingCreationDate(System.currentTimeMillis() - (long)31*24*1000*60*60);
         nextAvailableId++;
         listingCache.put(listing3.getId(), listing3);
@@ -158,10 +158,9 @@ public class CacheListingRepository implements ListingRepository {
 
     public List<Listing> byKeyword(String keyWord, List<Listing> list){
         List<Listing> temp = new ArrayList<>();
-        CharSequence keyWords = keyWord;
 
         for(Listing l : list){
-            if(l.getMessage().contains(keyWords) || l.getTitle().contains(keyWords)){
+            if(l.getMessage().toLowerCase().equalsIgnoreCase(keyWord.toLowerCase()) || l.getTitle().toLowerCase().contains(keyWord.toLowerCase())){
                 temp.add(l);
             }
         }
