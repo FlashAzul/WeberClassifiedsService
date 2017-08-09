@@ -27,12 +27,24 @@ public class ListingUtility {
             listing.setId(listingRepresentation.getId());
         }
 
-        listing.setMessage(listingRepresentation.getMessage());
-        listing.setPrice(listingRepresentation.getPrice());
-        listing.setTitle(listingRepresentation.getTitle());
-        listing.setCategory(listingRepresentation.getCategory());
-        listing.setType(listingRepresentation.getType());
-        listing.setUser(userRepository.read(listingRepresentation.getUser().getId()));
+        if (listingRepresentation.getMessage() != null) {
+            listing.setMessage(listingRepresentation.getMessage());
+        }
+        if (listingRepresentation.getPrice() != null) {
+            listing.setPrice(listingRepresentation.getPrice());
+        }
+        if (listingRepresentation.getTitle() != null) {
+            listing.setTitle(listingRepresentation.getTitle());
+        }
+        if (listingRepresentation.getCategory() != null) {
+            listing.setCategory(listingRepresentation.getCategory());
+        }
+        if (listingRepresentation.getType() != null) {
+            listing.setType(listingRepresentation.getType());
+        }
+        if (listingRepresentation.getUser().getId() != null) {
+            listing.setUser(userRepository.read(listingRepresentation.getUser().getId()));
+        }
         return listing;
     }
 

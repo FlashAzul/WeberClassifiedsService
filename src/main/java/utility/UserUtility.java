@@ -46,7 +46,7 @@ public class UserUtility {
         else {
             userModel.setId(userRepresentation.getId());
         }
-        if (StringUtils.isEmpty(userModel.getSalt()) && !StringUtils.isEmpty(userRepresentation.getPassword())) {
+        if (StringUtils.isEmpty(userModel.getSalt()) || !StringUtils.isEmpty(userRepresentation.getPassword())) {
             SecureRandom random = new SecureRandom();
             byte bytes[] = new byte[20];
             random.nextBytes(bytes);
@@ -54,14 +54,30 @@ public class UserUtility {
             userModel.setSalt(salt);
             userModel.setHashedPassword(AuthenticationUtility.hashPassword(userRepresentation.getPassword(), salt));
         }
-        userModel.setAccessLevel(userRepresentation.getAccessLevel());
-        userModel.setAddress(userRepresentation.getAddress());
-        userModel.setEmail(userRepresentation.getEmail());
-        userModel.setFirstName(userRepresentation.getFirstName());
-        userModel.setLastName(userRepresentation.getLastName());
-        userModel.setPhone(userRepresentation.getPhone());
-        userModel.setUserName(userRepresentation.getUserName());
-        userModel.setwNumber(userRepresentation.getwNumber());
+        if (userRepresentation.getAccessLevel() != null) {
+            userModel.setAccessLevel(userRepresentation.getAccessLevel());
+        }
+        if (userRepresentation.getAddress() != null) {
+            userModel.setAddress(userRepresentation.getAddress());
+        }
+        if (userRepresentation.getEmail() != null) {
+            userModel.setEmail(userRepresentation.getEmail());
+        }
+        if (userRepresentation.getFirstName() != null) {
+            userModel.setFirstName(userRepresentation.getFirstName());
+        }
+        if (userRepresentation.getLastName() != null) {
+            userModel.setLastName(userRepresentation.getLastName());
+        }
+        if (userRepresentation.getPhone() != null) {
+            userModel.setPhone(userRepresentation.getPhone());
+        }
+        if (userRepresentation.getUserName() != null) {
+            userModel.setPhone(userRepresentation.getUserName());
+        }
+        if (userRepresentation.getwNumber() != null) {
+            userModel.setwNumber(userRepresentation.getwNumber());
+        }
         return userModel;
     }
 }
