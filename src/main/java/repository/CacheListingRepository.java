@@ -158,10 +158,9 @@ public class CacheListingRepository implements ListingRepository {
 
     public List<Listing> byKeyword(String keyWord, List<Listing> list){
         List<Listing> temp = new ArrayList<>();
-        CharSequence keyWords = keyWord;
 
         for(Listing l : list){
-            if(l.getMessage().contains(keyWords) || l.getTitle().contains(keyWords)){
+            if(l.getMessage().toLowerCase().equalsIgnoreCase(keyWord.toLowerCase()) || l.getTitle().toLowerCase().contains(keyWord.toLowerCase())){
                 temp.add(l);
             }
         }
