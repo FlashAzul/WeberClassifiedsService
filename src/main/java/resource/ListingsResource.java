@@ -65,7 +65,9 @@ public class ListingsResource {
                 listings = listingRepository.byCityOrState(city,state,listings);
             }
             if(!searchTime.isEmpty()){
-                listings = listingRepository.byDate(searchTime, listings);
+                if(!searchTime.equals("")){
+                    listings = listingRepository.byDate(searchTime, listings);
+                }
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(ListingUtility.buildListingSummaryRepresentation

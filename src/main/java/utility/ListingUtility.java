@@ -60,6 +60,8 @@ public class ListingUtility {
         listingRepresentation.setPrice(listing.getPrice());
         listingRepresentation.setCategory(listing.getCategory());
         listingRepresentation.setType(listing.getType());
+        //listingRepresentation.setListingCreationDate(listing.getListingCreationDate());
+        listingRepresentation.setListingCreationDateString(listing.getListingCreationDateString());
         return listingRepresentation;
     }
 
@@ -86,6 +88,8 @@ public class ListingUtility {
         listingSummaryRepresentation.setMessageSummary(listing.getMessage().substring(0, summaryMessageLength));
         listingSummaryRepresentation.setCategory(listing.getCategory());
         listingSummaryRepresentation.setType(listing.getType());
+        //listingSummaryRepresentation.setListingCreationDate(listing.getListingCreationDate());
+        listingSummaryRepresentation.setListingCreationDateString(listing.getListingCreationDateString());
         return listingSummaryRepresentation;
     }
 

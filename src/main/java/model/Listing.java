@@ -1,6 +1,8 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DateFormat;
 
 /**
  * Created by Bryan Fritz on 7/15/2017.
@@ -14,9 +16,6 @@ public class Listing {
     private String price;
     private String type;
     private String category;
-
-
-
     private Date listingCreationDate;
 
     public Listing (Long id, String title, String message, User user, String type, String category, String price) {
@@ -93,7 +92,18 @@ public class Listing {
         return listingCreationDate;
     }
 
+    public String getListingCreationDateString() {
+        DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+        String returnDateString = df.format(this.getListingCreationDate());
+
+        return returnDateString ;
+    }
+
     public void setListingCreationDate(Long listingCreationDate) {
         this.listingCreationDate.setTime(listingCreationDate);
+    }
+
+    public void setListingCreationDate(Date listingCreationDate) {
+        this.listingCreationDate = listingCreationDate;
     }
 }

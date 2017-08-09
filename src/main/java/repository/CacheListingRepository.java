@@ -7,6 +7,7 @@ import model.User;
 import org.springframework.stereotype.Repository;
 import utility.AuthenticationUtility;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -176,7 +177,7 @@ public class CacheListingRepository implements ListingRepository {
             for(Listing l : list){
                 User thisListingUser = l.getUser();
 
-                if(thisListingUser.getAddress().getCity().toLowerCase().contains(i_city.toString().toLowerCase()) && thisListingUser.getAddress().getState().toLowerCase().contains(i_state.toLowerCase())){
+                if(thisListingUser.getAddress().getCity().toLowerCase().contains(i_city.toLowerCase()) && thisListingUser.getAddress().getState().toLowerCase().contains(i_state.toLowerCase())){
                     temp.add(l);
                 }
             }
@@ -202,24 +203,37 @@ public class CacheListingRepository implements ListingRepository {
     @Override
     public List<Listing> byDate(String date, List<Listing> list) {
         List<Listing> temp = new ArrayList<>();
-        long currentTime = System.currentTimeMillis();
 
-        for(Listing l : list){
-            long compareListingTime = l.getListingCreationDate().getTime();
-            if(date.equals("Last Hour")){
-                compareListingTime = (1000*60*60);
-            }else if(date.equals("Last 24 Hours")){
-                compareListingTime = (24*1000*60*60);
-            }else if(date.equals("Last 7 Days")){
-                compareListingTime = (7*24*1000*60*60);
-            }else if(date.equals("Last 30 days")){
-                compareListingTime = (30*24*1000*60*60);
+        if(date.equals("Last Hour")){
+            Date cd = new Date(System.currentTimeMillis() - (long)1000*60*60);
+            for(Listing l : list){
+                if( cd.before(l.getListingCreationDate()) || cd.equals(l.getListingCreationDate())){
+                    temp.add(l);
+                }
             }
-            if((currentTime - compareListingTime) > l.getListingCreationDate().getTime()){
-                temp.add(l);
+        }else if(date.equals("Last 24 Hours")) {
+            Date cd = new Date(System.currentTimeMillis() - (long)24*1000*60*60);
+            for(Listing l : list){
+                if( cd.before(l.getListingCreationDate()) || cd.equals(l.getListingCreationDate())){
+                    temp.add(l);
+                }
             }
+        }else if(date.equals("Last 7 Days")){
+            Date cd = new Date(System.currentTimeMillis() - (long)7*24*1000*60*60);
+            for(Listing l : list){
+                if( cd.before(l.getListingCreationDate()) || cd.equals(l.getListingCreationDate())){
+                    temp.add(l);
+                }
+            }
+        }else if(date.equals("Last 30 Days")){
+            Date cd = new Date(System.currentTimeMillis() - (long)30*24*1000*60*60);
+            for(Listing l : list){
+                if( cd.before(l.getListingCreationDate()) || cd.equals(l.getListingCreationDate())){
+                    temp.add(l);
+                }
+            }
+
         }
-
         return temp;
     }
 
