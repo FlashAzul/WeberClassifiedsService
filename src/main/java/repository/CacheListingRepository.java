@@ -65,7 +65,7 @@ public class CacheListingRepository implements ListingRepository {
     public Listing create (Listing listing) {
         listing.setId(nextAvailableId);
         nextAvailableId++;
-        listing.setListingCreationDate(new Date(System.currentTimeMillis() - (long) 31 * 24 * 1000 * 60 * 60));
+        listing.setListingCreationDate(new Date(System.currentTimeMillis()));
         listingCache.put(listing.getId(), listing);
         return listingCache.get(listing.getId());
     }
