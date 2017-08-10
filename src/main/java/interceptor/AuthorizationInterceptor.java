@@ -7,6 +7,8 @@ import io.jsonwebtoken.Jwts;
 import model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
@@ -16,6 +18,9 @@ import repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static application.ApplicationConstants.AUTH_TOKEN_HEADER;
 import static application.ApplicationConstants.TOKEN_SIGNATURE_KEY;
@@ -34,30 +39,38 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle (HttpServletRequest request, HttpServletResponse response, Object handler) throws
             Exception {
 
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
+        try {
+            if (handler instanceof HandlerMethod) {
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-            if (handlerMethod.getMethod().isAnnotationPresent(AuthorizationRequired.class)) {
-                String tokenTypeRequired = handlerMethod.getMethod().getAnnotation(AuthorizationRequired.class)
-                        .tokenTypeRequired();
+                if (handlerMethod.getMethod().isAnnotationPresent(AuthorizationRequired.class)) {
+                    String tokenTypeRequired = handlerMethod.getMethod().getAnnotation(AuthorizationRequired.class)
+                            .tokenTypeRequired();
 
-                String token = request.getHeader(AUTH_TOKEN_HEADER);
-                if (StringUtils.isEmpty(token)) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Authorization containing token " +
-                            "required...");
-                    return false;
+                    String token = request.getHeader(AUTH_TOKEN_HEADER);
+                    if (StringUtils.isEmpty(token)) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Authorization containing token " +
+                                "required...");
+                        return false;
+                    }
+                    User user = getUserFromToken(token);
+                    String tokenType = getTokenTypeFromToken(token);
+                    if (user == null || tokenType == null || !tokenType.equals(tokenTypeRequired)) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "User not authorized to perform action...");
+                        return false;
+                    }
+                    request.setAttribute(TOKEN_USER_ATTRIBUTE, user);
                 }
-                User user = getUserFromToken(token);
-                String tokenType = getTokenTypeFromToken(token);
-                if (user == null || tokenType == null || !tokenType.equals(tokenTypeRequired)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "User not authorized to perform action...");
-                    return false;
-                }
-                request.setAttribute(TOKEN_USER_ATTRIBUTE, user);
             }
+            return true;
 
         }
-        return true;
+        catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, sw.toString());
+            return false;
+        }
     }
 
     @Override

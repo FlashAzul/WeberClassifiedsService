@@ -60,7 +60,6 @@ public class ListingUtility {
         listingRepresentation.setPrice(listing.getPrice());
         listingRepresentation.setCategory(listing.getCategory());
         listingRepresentation.setType(listing.getType());
-        //listingRepresentation.setListingCreationDate(listing.getListingCreationDate());
         listingRepresentation.setListingCreationDateString(listing.getListingCreationDateString());
         return listingRepresentation;
     }

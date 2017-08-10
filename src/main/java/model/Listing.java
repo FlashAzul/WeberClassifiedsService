@@ -99,10 +99,6 @@ public class Listing {
         return returnDateString ;
     }
 
-    public void setListingCreationDate(Long listingCreationDate) {
-        this.listingCreationDate.setTime(listingCreationDate);
-    }
-
     public void setListingCreationDate(Date listingCreationDate) {
         this.listingCreationDate = listingCreationDate;
     }

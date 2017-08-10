@@ -73,7 +73,7 @@ public class UserUtility {
             userModel.setPhone(userRepresentation.getPhone());
         }
         if (userRepresentation.getUserName() != null) {
-            userModel.setPhone(userRepresentation.getUserName());
+            userModel.setUserName(userRepresentation.getUserName());
         }
         if (userRepresentation.getwNumber() != null) {
             userModel.setwNumber(userRepresentation.getwNumber());

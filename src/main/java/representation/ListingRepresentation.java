@@ -19,7 +19,6 @@ public class ListingRepresentation {
     private String price;
     private String type;
     private String category;
-    private Date listingCreationDate;
     private String listingCreationDateString;
 
     public ListingRepresentation () {
@@ -80,19 +79,6 @@ public class ListingRepresentation {
     public void setMessage (String message) {
         this.message = message;
     }
-
-    public Date getListingCreationDate() {
-        return listingCreationDate;
-    }
-
-    public void setListingCreationDate(Date listingCreationDate) {
-        this.listingCreationDate = listingCreationDate;
-    }
-
-    public void setListingCreationDate(Long listingCreationDate) {
-        this.listingCreationDate.setTime(listingCreationDate);
-    }
-
 
     public String getListingCreationDateString() {
         return listingCreationDateString;

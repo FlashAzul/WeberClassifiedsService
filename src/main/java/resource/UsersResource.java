@@ -79,6 +79,7 @@ public class UsersResource {
             (USER_CREATION_TOKEN_HEADER) String userCreationToken) {
 
         try {
+
             if (!userCreationToken.equals(USER_CREATION_TOKEN)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized To Perform Requested " +
                         "Action");

@@ -18,7 +18,6 @@ public class ListingSummaryRepresentation {
     private String type;
     private UserRepresentation user;
     private String category;
-    private Date listingCreationDate;
     private String listingCreationDateString;
 
     public ListingSummaryRepresentation () {
@@ -79,19 +78,6 @@ public class ListingSummaryRepresentation {
     public void setMessageSummary (String messageSummary) {
         this.messageSummary = messageSummary;
     }
-
-    public Date getListingCreationDate() {
-        return listingCreationDate;
-    }
-
-    public void setListingCreationDate(Date listingCreationDate) {
-        this.listingCreationDate = listingCreationDate;
-    }
-
-    public void setListingCreationDate(Long listingCreationDate) {
-        this.listingCreationDate.setTime(listingCreationDate);
-    }
-
 
     public String getListingCreationDateString() {
         return listingCreationDateString;

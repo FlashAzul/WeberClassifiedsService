@@ -7,7 +7,13 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import repository.ListingRepository;
 import repository.UserRepository;
 import representation.ListingRepresentation;
@@ -39,33 +45,35 @@ public class ListingsResource {
 
     @AuthorizationRequired
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getListingsSummary (@RequestParam (value = "minPrice", defaultValue = "") String minPrice, @RequestParam (value = "maxPrice", defaultValue = "") String maxPrice,
-                                              @RequestParam (value = "type", defaultValue = "") String type, @RequestParam (value = "category", defaultValue = "") String category,
-                                              @RequestParam (value = "keyWord", defaultValue = "") String keyWord, @RequestParam (value = "state", defaultValue = "") String state,
-                                              @RequestParam (value = "city", defaultValue = "") String city, @RequestParam (value = "searchTime", defaultValue = "") String searchTime) {
+    public ResponseEntity getListingsSummary (@RequestParam(value = "minPrice", defaultValue = "") String minPrice,
+            @RequestParam(value = "maxPrice", defaultValue = "") String maxPrice, @RequestParam(value = "type",
+            defaultValue = "") String type, @RequestParam(value = "category", defaultValue = "") String category,
+            @RequestParam(value = "keyWord", defaultValue = "") String keyWord, @RequestParam(value = "state",
+            defaultValue = "") String state, @RequestParam(value = "city", defaultValue = "") String city,
+            @RequestParam(value = "searchTime", defaultValue = "") String searchTime) {
         try {
             List<Listing> listings = listingRepository.read();
 
             if (listings == null) {
                 listings = new ArrayList<>();
             }
-            if(!minPrice.isEmpty() | !maxPrice.isEmpty()){
-                listings = listingRepository.byPrice(minPrice,maxPrice, listings);
+            if (!minPrice.isEmpty() | !maxPrice.isEmpty()) {
+                listings = listingRepository.byPrice(minPrice, maxPrice, listings);
             }
-            if(!type.isEmpty()){
+            if (!type.isEmpty()) {
                 listings = listingRepository.byType(type, listings);
             }
-            if(!category.isEmpty()){
+            if (!category.isEmpty()) {
                 listings = listingRepository.byCategory(category, listings);
             }
-            if(!keyWord.isEmpty()){
+            if (!keyWord.isEmpty()) {
                 listings = listingRepository.byKeyword(keyWord, listings);
             }
-            if(!state.isEmpty() || !city.isEmpty()){
-                listings = listingRepository.byCityOrState(city,state,listings);
+            if (!state.isEmpty() || !city.isEmpty()) {
+                listings = listingRepository.byCityOrState(city, state, listings);
             }
-            if(!searchTime.isEmpty()){
-                if(!searchTime.equals("")){
+            if (!searchTime.isEmpty()) {
+                if (!searchTime.equals("")) {
                     listings = listingRepository.byDate(searchTime, listings);
                 }
             }
